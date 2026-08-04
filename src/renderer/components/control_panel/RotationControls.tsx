@@ -1,14 +1,14 @@
 import React, { use } from 'react'
 
 import { LABEL } from '../../constants'
-import type { TempImageName } from '../../types'
+import type { Side } from '../../types'
 
 import { ElectronAPI } from '../../context/ElectronAPIContext'
 
 import IconButton from '../utility_components/IconButton'
 
 interface Props {
-  side: TempImageName
+  side: Side
   isSideways: boolean
 }
 

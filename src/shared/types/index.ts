@@ -15,10 +15,10 @@ export type FitTypeValue = typeof FIT_TYPE[keyof typeof FIT_TYPE]
 export type FormatValue = typeof FORMAT[keyof typeof FORMAT]
 export type SaveTypeValue = typeof SAVE_TYPE[keyof typeof SAVE_TYPE]
 export type PostSaveAction = typeof POST_SAVE_ACTION[keyof typeof POST_SAVE_ACTION]
-export type TempImageName = typeof SIDE[keyof typeof SIDE]
+export type Side = typeof SIDE[keyof typeof SIDE]
 
 export interface SideOption {
-  side: TempImageName
+  side: Side
 }
 
 export interface UploadImageOptions extends SideOption {

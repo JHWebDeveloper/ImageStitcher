@@ -1,7 +1,7 @@
 import { contextBridge, ipcRenderer, type IpcRendererEvent, webUtils } from 'electron'
 
 import { CHANNEL, NAMESPACE } from './constants'
-import type { AdjustStitchOpts, AlignmentTypeValue, FitTypeValue, IpcChannel, SafeResponse, SaveOptions, StitchResponse, TempImageName } from './types'
+import type { AdjustStitchOpts, AlignmentTypeValue, FitTypeValue, IpcChannel, SafeResponse, SaveOptions, StitchResponse, Side } from './types'
 
 function send<K extends keyof IpcChannel>(
   channel: K,
@@ -34,7 +34,7 @@ export const electronAPI = {
   },
 
   uploadImage(
-    side: TempImageName,
+    side: Side,
     file?: File | null,
     shouldReplace?: typeof file extends null ? never : boolean
   ) {
@@ -61,7 +61,7 @@ export const electronAPI = {
     send(CHANNEL.SWAP_IMAGES)
   },
 
-  clearImage(side: TempImageName) {
+  clearImage(side: Side) {
     send(CHANNEL.CLEAR_IMAGE, { side })
   },
 
@@ -73,15 +73,15 @@ export const electronAPI = {
     send(CHANNEL.TOGGLE_ORIENTATION, { shouldSwap, shouldRotate })
   },
 
-  rotateImage(side: TempImageName, ccw: boolean = false) {
+  rotateImage(side: Side, ccw: boolean = false) {
     send(CHANNEL.ROTATE_IMAGE, { side, ccw })
   },
 
-  flipImage(side: TempImageName) {
+  flipImage(side: Side) {
     send(CHANNEL.TOGGLE_FLIP, { side })
   },
 
-  flopImage(side: TempImageName) {
+  flopImage(side: Side) {
     send(CHANNEL.TOGGLE_FLOP, { side })
   },
 

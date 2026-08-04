@@ -1,12 +1,12 @@
 import React, { use } from 'react'
 
-import type { DivDragEvent, TempImageName } from '../../types'
+import type { DivDragEvent, Side } from '../../types'
 
 import { ElectronAPI } from '../../context/ElectronAPIContext'
 import { SaveContext } from '../../context/SaveContext'
 
 interface Props {
-  side: TempImageName
+  side: Side
   label: string
   shouldReplace?: boolean
   allowMultiple?: boolean

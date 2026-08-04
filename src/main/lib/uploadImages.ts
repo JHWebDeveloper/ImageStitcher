@@ -4,7 +4,7 @@ import type { WebContents } from 'electron'
 import type { FormatEnum } from 'sharp'
 
 import { DEFAULT_VALUE, FIT_TYPE, FORMAT, POST_SAVE_ACTION, SIDE, UPLOADS_PATH } from '../constants'
-import type { AdjustStitchOpts, AlignmentTypeValue, FitTypeValue, RotateOptions, SaveOptions, SideOption, StitchOptions, StitchResult, StitchResultRaw, TempImageName, UploadImageOptions } from '../types'
+import type { AdjustStitchOpts, AlignmentTypeValue, FitTypeValue, RotateOptions, SaveOptions, SideOption, StitchOptions, StitchResult, StitchResultRaw, Side, UploadImageOptions } from '../types'
 import { arrayIsNullOrEmpty, hexToRgb, swapPropertiesMutative, xor } from '../utilities'
 
 import { emptyUploadDirectory, selectImageDialog } from './fileHandlers'
@@ -17,7 +17,7 @@ interface ToggleOrientationOps {
 }
 
 export class ImageUploadData {
-  name: TempImageName
+  name: Side
   originalPath: string | null = null
   srcPath: string | null = null
   angle: number = DEFAULT_VALUE.ANGLE
@@ -25,7 +25,7 @@ export class ImageUploadData {
   flop: boolean = DEFAULT_VALUE.FLOP
   private _crop: number = 1
 
-  constructor(imageName: TempImageName) {
+  constructor(imageName: Side) {
     this.name = imageName
   }
 
@@ -103,7 +103,7 @@ function getImageAFormat(format?: keyof FormatEnum) {
   return format && Object.values(FORMAT).includes(format) ? format : DEFAULT_VALUE.FORMAT
 }
 
-export class ImageStitchData implements Record<TempImageName, ImageUploadData> {
+export class ImageStitchData implements Record<Side, ImageUploadData> {
   A = new ImageUploadData(SIDE.A)
   B = new ImageUploadData(SIDE.B)
   previewMaxWidth = 0

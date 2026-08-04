@@ -1,0 +1,84 @@
+import path from 'node:path'
+import { pathToFileURL } from 'node:url'
+import { app, BrowserWindow, Menu, MenuItem, MenuItemConstructorOptions, shell, nativeTheme } from 'electron'
+
+import { IS_DEV, IS_MAC } from './constants'
+import { createBrowserWindowOptions, doesFileExist } from './utilities'
+
+import { setIpcRoutes } from './lib/ipcRoutes'
+import { emptyUploadDirectory } from './lib/fileHandlers'
+import { ImageStitchData } from './lib/uploadImages'
+
+let mainWin: BrowserWindow | null = null
+let imageStitcher: ImageStitchData | null = null
+let preloadPath: string
+
+if (!IS_DEV) {
+	preloadPath = path.join(import.meta.dirname, 'preload.js')
+} else {
+	preloadPath = path.join(import.meta.dirname, '..', '..', 'build', 'preload.js')
+}
+
+function createURL(view = 'index') {
+	const { href } = IS_DEV
+		? new URL(`http://localhost:${process.env.PORT}/${view}.html`)
+		: pathToFileURL(path.join(import.meta.dirname, 'renderer', `${view}.html`))
+
+	return href
+}
+
+async function createMainWindow() {
+	if (IS_DEV) { // pause in dev until preload.js is compiled
+		let preloadScriptExists = false
+
+		while (!preloadScriptExists) {
+			preloadScriptExists = await doesFileExist(preloadPath)
+		}
+	}
+
+	mainWin = new BrowserWindow(createBrowserWindowOptions(preloadPath))
+
+	mainWin.loadURL(createURL())
+
+	// Menu.setApplicationMenu(Menu.buildFromTemplate())
+	await emptyUploadDirectory()
+
+	mainWin.on('ready-to-show', async () => {
+		if (!imageStitcher) {
+			imageStitcher = new ImageStitchData()
+			setIpcRoutes(imageStitcher)
+		}
+
+		mainWin?.show()
+
+		if (IS_DEV) mainWin?.webContents.openDevTools()
+	})
+
+	mainWin.on('close', async () => {
+		imageStitcher = null
+		mainWin = null
+	})
+}
+
+const lock = app.requestSingleInstanceLock()
+
+if (!lock) {
+	app.quit()
+} else {
+	app.on('second-instance', () => {
+		if (mainWin) {
+			if (mainWin.isMinimized()) mainWin.restore()
+			mainWin.focus()
+		}
+	})
+
+	app.on('ready', createMainWindow)
+}
+
+app.on('window-all-closed', () => {
+	if (!IS_MAC) app.quit()
+})
+
+app.on('activate', () => {
+	if (!mainWin) createMainWindow()
+})

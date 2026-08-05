@@ -1,4 +1,4 @@
-import sharp, { type Metadata, type Region, type Sharp } from 'sharp'
+import sharp, { FormatEnum, type Metadata, type Region, type Sharp } from 'sharp'
 
 import { ALIGNMENT_TYPE, DEFAULT_VALUE, FIT_TYPE, LOSSLESS_IMAGE_FORMAT, PREVIEW_IMAGE_FORMAT, SIDE } from '../constants'
 import type { AlignmentTypeValue, FitTypeValue, StitchOptions, StitchResultRaw } from '../types'
@@ -32,7 +32,16 @@ function returnAlignmentType(alignmentType: AlignmentTypeValue, isVertical: bool
   return 'centre'
 }
 
-export async function convertBufferToBase64(imgPathOrBuffer: string | Buffer<ArrayBufferLike>) {
+export async function getFormatFromBuffer(buffer: Buffer<ArrayBufferLike>) {
+  const { format } = await sharp(buffer).metadata()
+
+  return format
+}
+
+export async function convertBufferToBase64(
+  imgPathOrBuffer: string | Buffer<ArrayBufferLike>,
+  format: keyof FormatEnum
+) {
   let buffer: Buffer<ArrayBufferLike>
 
   if (typeof imgPathOrBuffer === 'string') {
@@ -41,7 +50,7 @@ export async function convertBufferToBase64(imgPathOrBuffer: string | Buffer<Arr
     buffer = imgPathOrBuffer
   }
 
-  return formatBase64String(buffer.toString('base64'), PREVIEW_IMAGE_FORMAT) 
+  return formatBase64String(buffer.toString('base64'), format || await getFormatFromBuffer(format)) 
 }
 
 export async function prepareImage(

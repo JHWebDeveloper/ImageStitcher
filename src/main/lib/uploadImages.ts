@@ -20,17 +20,17 @@ export class ImageUploadData {
   name: Side
   originalPath: string | null = null
   srcPath: string | null = null
-  angle: number = DEFAULT_VALUE.ANGLE
-  flip: boolean = DEFAULT_VALUE.FLIP
-  flop: boolean = DEFAULT_VALUE.FLOP
-  private _crop: number = 1
+  angle = DEFAULT_VALUE.ANGLE
+  flip = DEFAULT_VALUE.FLIP
+  flop = DEFAULT_VALUE.FLOP
+  private _crop = 1
 
   constructor(imageName: Side) {
     this.name = imageName
   }
 
   get hasOriginal() {
-    return !!this.originalPath
+    return !xor(!!this.srcPath, !!this.originalPath)
   }
 
   set crop(value: number) {
@@ -108,10 +108,14 @@ export class ImageStitchData implements Record<Side, ImageUploadData> {
   B = new ImageUploadData(SIDE.B)
   previewMaxWidth = 0
   previewMaxHeight = 0
-  isVertical: boolean = DEFAULT_VALUE.IS_VERTICAL
+  isVertical = DEFAULT_VALUE.IS_VERTICAL
   fitType: FitTypeValue = DEFAULT_VALUE.FIT_TYPE
   alignmentType: AlignmentTypeValue = DEFAULT_VALUE.ALIGNMENT_TYPE
   private _background = DEFAULT_VALUE.BACKGROUND_COLOR_RGB
+
+  get background(): typeof this._background {
+    return this._background
+  }
 
   set backgroundColor(hex: string) {
     this._background = {
@@ -127,10 +131,6 @@ export class ImageStitchData implements Record<Side, ImageUploadData> {
     }
   }
 
-  get background(): typeof this._background {
-    return this._background
-  }
-
   get isUpscale() {
     return this.fitType === FIT_TYPE.UPSCALE
   }
@@ -139,12 +139,12 @@ export class ImageStitchData implements Record<Side, ImageUploadData> {
     return this.fitType === FIT_TYPE.CONTAIN
   }
 
-  get prefersLargerImage() {
-    return this.isUpscale || this.isContain
-  }
-
   get isResize() {
     return this.isUpscale || this.fitType === FIT_TYPE.DOWNSCALE
+  }
+
+  get prefersLargerImage() {
+    return this.isUpscale || this.isContain
   }
 
   resetMetadata() {

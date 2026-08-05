@@ -46,6 +46,7 @@
 		box-sizing: border-box;
 		margin: 0;
 		padding: 0;
+		user-select: none;
 	}
 
 	html {
@@ -62,6 +63,10 @@
 
 	p, h1, h2, h3, h4, h5, h6, label, li {
 		overflow-wrap: break-word;
+	}
+
+	p, h1, h2, h3, h4, h5, h6, li {
+		user-select: text;
 	}
 
 	h1, h2, h3, h4, h5, h6 {
@@ -86,10 +91,6 @@
 	#root {
 		isolation: isolate;
 	}
-}
-
-@layer base {
-	
 }
 
 body {
@@ -144,7 +145,17 @@ main {
   display: grid;
   inline-size: 100%;
   block-size: 100%;
-  grid-template-rows: auto 40px 60px;
+	grid-template-columns: auto min-content;
+}
+
+.stage,
+.sidebar {
+	display: inherit;
+	grid-auto-flow: row;
+}
+
+.stage {
+	grid-template-rows: auto 40px 60px;
 }
 
 .image-stitch {
@@ -205,7 +216,6 @@ main {
 }
 
 .control-panel {
-	--padding: 12px;
   display: inherit;
 	grid-row: 2 / span 2;
   grid-template-rows: subgrid;
@@ -215,9 +225,7 @@ main {
 
 .single-control,
 .crop-control,
-.dual-control,
-.fit-options,
-.save-options {
+.dual-control {
 	display: flex;
 	align-items: center;
 }
@@ -228,9 +236,10 @@ main {
 
 .single-control,
 .dual-control {
-	grid-row: 1;
 	justify-content: center;
 }
+
+.single-control { grid-row: 1; }
 
 .control-panel button {
 	display: grid;
@@ -271,21 +280,32 @@ main {
 	grid-column-start: 5;
 }
 
-.dual-control,
-.fit-options,
-.save-options {
+.dual-control {
 	grid-row: 2;
 }
 
-.fit-options,
-.save-options {
-	display: flex;
-	column-gap: 10px;
+.sidebar {
+	--spacing: 4%;
+	position: relative;
+	grid-column: 2;
+	grid-auto-rows: min-content;
+	padding: 12px;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: var(--spacing);
+		width: 1px;
+		height: calc(100% - var(--spacing) * 2);
+		background-color: var(--secondary-color);
+	}
 }
 
-.fit-options {
-	grid-column-start: 1;
-	padding-inline-start: var(--padding);
+.fit-options,
+.save-options {
+	display: inherit;
+	grid-auto-flow: inherit;
+	column-gap: 10px;
 }
 
 .fit-options > input[type="number"] {
@@ -293,15 +313,13 @@ main {
 }
 
 .alignment-options {
-	display: inherit;
+	display: flex;
 	align-items: center;
 	block-size: 100%;
 }
 
 .save-options {
-	grid-column-start: 9;
-	justify-content: end;
-	padding-inline-end: var(--padding);
+	grid-row: 2;
 }
 
 .save-options > fieldset {
@@ -317,7 +335,7 @@ main {
 	column-gap: 5px;
 }
 
-/* -~-~-~- RESET -~-~-~- */
+/* -~-~-~- SLIDER -~-~-~- */
 
 .slider, .slider span { display: block; }
 

@@ -8,6 +8,26 @@ import type { SaveOptions } from '../types'
 
 import type { ImageStitchData, ImageUploadData } from './uploadImages'
 
+interface ReplaceImageOpts {
+  format: keyof FormatEnum
+  originalFilePath: string
+  result: Buffer<ArrayBufferLike>
+  shouldWarn: boolean
+}
+
+interface SaveImageWithDialogOpts {
+  buffer: Buffer<ArrayBufferLike>
+  format: keyof FormatEnum
+  imageStitchData: ImageStitchData
+  webContents: WebContents | null
+}
+
+interface DeleteImageAfterSaveOpts {
+  imageData: ImageUploadData
+  newFilePath: string
+  shouldDelete: boolean
+}
+
 export async function selectImageDialog(
   webContents: WebContents,
   maxSelections: 1 | 2 = 1
@@ -37,17 +57,22 @@ export async function emptyUploadDirectory() {
   await Promise.all(fileNames.map(filename => fsp.unlink(path.join(UPLOADS_PATH, filename))))
 }
 
-export async function replaceImage(
-  originalFilePath: string,
-  format: keyof FormatEnum,
-  result: Buffer<ArrayBufferLike>
-): Promise<SaveDialogReturnValue> {
+async function warnBeforeOverwriting(originalFilePath: string) {
   const { response } = await dialog.showMessageBox({
     message: `Overwrite ${path.basename(originalFilePath)}?`,
     buttons: ['Cancel', 'OK']
   })
 
-  if (!response) {
+  return !!response
+}
+
+export async function replaceImage({
+  format,
+  originalFilePath,
+  result,
+  shouldWarn
+}: ReplaceImageOpts): Promise<SaveDialogReturnValue> {
+  if (shouldWarn && !(await warnBeforeOverwriting(originalFilePath))) {
     return { canceled: true, filePath: '' }
   }
 
@@ -61,18 +86,18 @@ export async function replaceImage(
   return { canceled: false, filePath }
 }
 
-export async function deleteImageAfterSave(
-  shouldDelete: boolean,
-  imageData: ImageUploadData,
-  newFilePath: string
-) {
+export async function deleteImageAfterSave({
+  imageData,
+  newFilePath,
+  shouldDelete
+}: DeleteImageAfterSaveOpts) {
   const { originalPath } = imageData
 
   if (!shouldDelete || !originalPath || originalPath === newFilePath) return
 
   imageData.originalPath = null
   
-  return await fsp.unlink(originalPath)
+  return fsp.unlink(originalPath)
 }
 
 function createDefaultPath(
@@ -87,12 +112,12 @@ function createDefaultPath(
   return path.join(app.getPath('pictures'), `untitled.${format}`)
 }
 
-async function saveImageWithDialog(
-  webContents: WebContents | null,
-  imageStitchData: ImageStitchData,
-  format: keyof FormatEnum,
-  buffer: Buffer<ArrayBufferLike>
-) {
+async function saveImageWithDialog({
+  buffer,
+  format,
+  imageStitchData,
+  webContents
+}: SaveImageWithDialogOpts) {
   if (!webContents) throw new Error('No browser window provided')
 
   const browserWindow = BrowserWindow.fromWebContents(webContents)
@@ -122,9 +147,10 @@ export async function saveImage(
   webContents: WebContents | null,
   imageStitchData: ImageStitchData,
   {
-    saveType,
     deleteA,
     deleteB,
+    saveType,
+    shouldWarn,
     format = DEFAULT_VALUE.FORMAT
   }: SaveOptions
 ) {
@@ -138,23 +164,46 @@ export async function saveImage(
   let fileData: SaveDialogReturnValue
 
   if (isReplaceA && imageStitchData.A.originalPath) {
-    fileData = await replaceImage(imageStitchData.A.originalPath, format, result)
+    fileData = await replaceImage({
+      originalFilePath: imageStitchData.A.originalPath,
+      format,
+      result, 
+      shouldWarn
+    })
   } else if (isReplaceB && imageStitchData.B.originalPath) {
-    fileData = await replaceImage(imageStitchData.B.originalPath, format, result)
+    fileData = await replaceImage({
+      originalFilePath: imageStitchData.B.originalPath,
+      format,
+      result,
+      shouldWarn
+    })
   } else {
-    fileData = await saveImageWithDialog(webContents, imageStitchData, format, result)
+    fileData = await saveImageWithDialog({
+      buffer: result,
+      format,
+      imageStitchData,
+      webContents
+    })
   }
 
   if (fileData.canceled || !fileData.filePath) return fileData
 
-  const shouldDeleteA = deleteA && (isReplaceB || isNewFile) && imageStitchData.A.hasOriginal
-  const shouldDeleteB = deleteB && (isReplaceA || isNewFile) && imageStitchData.B.hasOriginal
+  const shouldDeleteA = deleteA && imageStitchData.A.hasOriginal && (isReplaceB || isNewFile)
+  const shouldDeleteB = deleteB && imageStitchData.B.hasOriginal && (isReplaceA || isNewFile)
 
   if (!shouldDeleteA && !shouldDeleteB) return fileData
 
   await Promise.all([
-    deleteImageAfterSave(shouldDeleteA, imageStitchData.A, fileData.filePath),
-    deleteImageAfterSave(shouldDeleteB, imageStitchData.B, fileData.filePath)
+    deleteImageAfterSave({
+      imageData: imageStitchData.A,
+      newFilePath: fileData.filePath,
+      shouldDelete: shouldDeleteA
+    }),
+    deleteImageAfterSave({
+      imageData: imageStitchData.B,
+      newFilePath: fileData.filePath,
+      shouldDelete: shouldDeleteB
+    })
   ])
 
   return fileData

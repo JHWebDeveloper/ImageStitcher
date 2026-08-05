@@ -13,16 +13,16 @@ import IconButton from '../utility_components/IconButton'
 import Checkbox from '../utility_components/Checkbox'
 
 export default function SaveOptions() {
-  const { saveImage } = use(ElectronAPI)
+  const { flattenImage, saveImage } = use(ElectronAPI)
   const [ labelA, labelB ] = use(LabelContext)
   const { isImageALoaded, imageAHasOriginal, imageBHasOriginal } = use(ResponseContext)
-  const { getSaveOptions, saveType, ...saveCtx }= use(SaveContext)
+  const { getSaveOptions, format, saveType, ...saveCtx }= use(SaveContext)
 
   const isNewFile = saveType === SAVE_TYPE.NEW_FILE
 
   const saveTypeLabels = {
-    [SAVE_TYPE.REPLACE_A]: `${LABEL.REPLACE} ${labelA}`,
-    [SAVE_TYPE.REPLACE_B]: `${LABEL.REPLACE} ${labelB}`,
+    [SAVE_TYPE.REPLACE_A]: `${LABEL.REPLACE_ORIGINAL} ${labelA}`,
+    [SAVE_TYPE.REPLACE_B]: `${LABEL.REPLACE_ORIGINAL} ${labelB}`,
     [SAVE_TYPE.NEW_FILE]: LABEL.NEW_FILE
   }
 
@@ -53,7 +53,7 @@ export default function SaveOptions() {
           onChange={saveCtx.toggleShouldWarn} />
       </fieldset>
       <Select
-        value={saveCtx.format}
+        value={format}
         onChange={saveCtx.setFormat}
         optionLabels={LABEL}
         optionValues={FORMAT} />
@@ -65,13 +65,13 @@ export default function SaveOptions() {
       <fieldset name="delete-options">
         <ToggleComponent shouldShow={imageAHasOriginal && (isNewFile || saveType === SAVE_TYPE.REPLACE_B)}>
           <Checkbox
-            label={`${LABEL.DELETE} ${labelA}`}
+            label={`${LABEL.DELETE_ORIGINAL} ${labelA}`}
             checked={saveCtx.deleteA}
             onChange={() => saveCtx.toggleDeleteA()} />
         </ToggleComponent>
         <ToggleComponent shouldShow={imageBHasOriginal && (isNewFile || saveType === SAVE_TYPE.REPLACE_A)}>
           <Checkbox
-            label={`${LABEL.DELETE} ${labelB}`}
+            label={`${LABEL.DELETE_ORIGINAL} ${labelB}`}
             checked={saveCtx.deleteB}
             onChange={() => saveCtx.toggleDeleteB()} />
         </ToggleComponent>
@@ -81,6 +81,11 @@ export default function SaveOptions() {
         onChange={saveCtx.setPostSaveAction}
         optionLabels={postSaveActionLabels}
         optionValues={POST_SAVE_ACTION} />
+      <IconButton
+        icon="cell_merge"
+        title={LABEL.FLATTEN}
+        onClick={() => flattenImage(format)}
+        disabled={!isImageALoaded} />
       <IconButton
         icon="save"
         title={LABEL.SAVE_IMAGE}

@@ -36,11 +36,12 @@ export interface ToggleOrientationOps {
 }
 
 export interface SaveOptions {
-  saveType: SaveTypeValue
-  deleteA: boolean
-  deleteB: boolean
   format: keyof FormatEnum
   postSaveAction: PostSaveAction
+  deleteA: boolean
+  deleteB: boolean
+  saveType: SaveTypeValue
+  shouldWarn: boolean
 }
 
 export interface StitchResult {
@@ -82,6 +83,9 @@ export interface IpcChannel {
   }
   [CHANNEL.DISPLAY_STITCH_RESULT]: {
     payload: StitchResponse
+  }
+  [CHANNEL.FLATTEN_IMAGE]: {
+    payload: SaveOptions
   }
   [CHANNEL.IS_MERGE_RESULT_READY]: {
     payload: {},

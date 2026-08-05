@@ -3,12 +3,12 @@ import path from 'node:path'
 import type { WebContents } from 'electron'
 import type { FormatEnum } from 'sharp'
 
-import { DEFAULT_VALUE, FIT_TYPE, FORMAT, POST_SAVE_ACTION, SIDE, UPLOADS_PATH } from '../constants'
+import { DEFAULT_VALUE, FIT_TYPE, FORMAT, POST_SAVE_ACTION, PREVIEW_IMAGE_FORMAT, SIDE, UPLOADS_PATH } from '../constants'
 import type { AdjustStitchOpts, AlignmentTypeValue, FitTypeValue, RotateOptions, SaveOptions, SideOption, StitchOptions, StitchResult, StitchResultRaw, Side, UploadImageOptions } from '../types'
 import { arrayIsNullOrEmpty, hexToRgb, swapPropertiesMutative, xor } from '../utilities'
 
 import { emptyUploadDirectory, selectImageDialog } from './fileHandlers'
-import { convertBufferToBase64, prepareImage, renderSingleImage, stitchImages } from './editImages'
+import { convertBufferToBase64, getFormatFromBuffer, prepareImage, renderSingleImage, stitchImages } from './editImages'
 import { saveImage } from './fileHandlers'
 
 interface ToggleOrientationOps {
@@ -42,7 +42,7 @@ export class ImageUploadData {
   }
 
   get cropPercent() {
-    return (this.name === SIDE.B ? 1 - this._crop + 1 : this._crop) * 100
+    return (this.name === SIDE.B ? 1 - this.crop + 1 : this.crop) * 100
   }
 
   get isLoaded() {
@@ -71,15 +71,29 @@ export class ImageUploadData {
     this.angle %= 360
   }
 
-  async uploadImage(originalPath: string) {
+  async uploadImage(
+    pathOrBuffer: string | Buffer<ArrayBufferLike>,
+    format?: typeof pathOrBuffer extends string ? never : keyof FormatEnum
+  ) {
+    let srcPath: string
+
     this.resetMetadata()
 
-    const srcPath = path.join(UPLOADS_PATH, `${this.name}${path.extname(originalPath)}`)
+    if (typeof pathOrBuffer === 'string') {
+      srcPath = path.join(UPLOADS_PATH, `${this.name}${path.extname(pathOrBuffer)}`)
 
-    await fsp.copyFile(originalPath, srcPath)
+      await fsp.copyFile(pathOrBuffer, srcPath)
 
-    this.originalPath = originalPath
-    this.srcPath = srcPath
+      this.originalPath = pathOrBuffer
+    } else {
+      srcPath = path.join(UPLOADS_PATH, `${this.name}.${format || await getFormatFromBuffer(pathOrBuffer)}`)
+
+      await fsp.writeFile(srcPath, pathOrBuffer)
+
+      this.originalPath = null
+    }
+
+    this.srcPath = srcPath /* only update srcPath once image is successfully copied */
   }
 
   async removeImage() {
@@ -113,20 +127,24 @@ export class ImageStitchData implements Record<Side, ImageUploadData> {
   alignmentType: AlignmentTypeValue = DEFAULT_VALUE.ALIGNMENT_TYPE
   private _background = DEFAULT_VALUE.BACKGROUND_COLOR_RGB
 
-  get background(): typeof this._background {
+  get background() {
     return this._background
   }
 
+  set background(bg: typeof this._background) {
+    this._background = bg
+  }
+
   set backgroundColor(hex: string) {
-    this._background = {
-      ...this._background,
+    this.background = {
+      ...this.background,
       ...hexToRgb(hex)
     }
   }
 
   set backgroundOpacity(prc: number) {
-    this._background = {
-      ...this._background,
+    this.background = {
+      ...this.background,
       alpha: prc / 100
     }
   }
@@ -150,7 +168,7 @@ export class ImageStitchData implements Record<Side, ImageUploadData> {
   resetMetadata() {
     this.fitType = DEFAULT_VALUE.FIT_TYPE
     this.alignmentType = DEFAULT_VALUE.ALIGNMENT_TYPE
-    this._background = DEFAULT_VALUE.BACKGROUND_COLOR_RGB
+    this.background = DEFAULT_VALUE.BACKGROUND_COLOR_RGB
     this.A.resetMetadata()
     this.B.resetMetadata()
   }
@@ -173,26 +191,29 @@ export class ImageStitchData implements Record<Side, ImageUploadData> {
 
   async uploadImage(
     {
-      imagePath,
+      pathOrBuffer,
+      format,
       shouldReplace,
       side
     }: UploadImageOptions,
-    webContents: WebContents
+    webContents?: WebContents
   ) {
-    if (!imagePath) {
+    if (!pathOrBuffer && webContents) {      
       const { canceled, filePaths } = await selectImageDialog(webContents, 1)
 
       if (canceled || arrayIsNullOrEmpty(filePaths)) return
 
-      imagePath = filePaths[0]
+      pathOrBuffer = filePaths[0]
+    } else if (!pathOrBuffer) {
+      throw new Error('An argument for parameter webContents is required when no image path or buffer is provided.')
     }
 
     if (!shouldReplace && side === SIDE.A && this.A.isLoaded && !this.B.isLoaded) {
-      await this.B.uploadImage(imagePath)
+      await this.B.uploadImage(pathOrBuffer, format)
       return this.swap()
     }
 
-    return this[side].uploadImage(imagePath)
+    return this[side].uploadImage(pathOrBuffer, format)
   }
 
   async uploadImages(imagePaths: string[] | undefined, webContents: WebContents) {
@@ -280,7 +301,7 @@ export class ImageStitchData implements Record<Side, ImageUploadData> {
     })
 
     return {
-      base64: result ? await convertBufferToBase64(result) : void 0,
+      base64: result ? await convertBufferToBase64(result, PREVIEW_IMAGE_FORMAT) : void 0,
       isImageALoaded: this.A.isLoaded,
       isImageBLoaded: this.B.isLoaded,
       isVertical: this.isVertical,
@@ -294,6 +315,18 @@ export class ImageStitchData implements Record<Side, ImageUploadData> {
     }
   }
 
+  async flatten(format: keyof FormatEnum) {
+    const { result } = await this.result({ format })
+
+    await this.removeBothImages()
+    await this.uploadImage({
+      side: SIDE.A,
+      pathOrBuffer: result,
+      format
+    })
+
+  }
+
   async save(webContents: WebContents, saveOpts: SaveOptions) {
     const { canceled, filePath: imagePath } = await saveImage(webContents, this, saveOpts)
 
@@ -302,7 +335,10 @@ export class ImageStitchData implements Record<Side, ImageUploadData> {
     switch (saveOpts.postSaveAction) {
       case POST_SAVE_ACTION.LOAD_RESULT:
         await this.removeBothImages()
-        await this.uploadImage({ imagePath, side: SIDE.A }, webContents)
+        await this.uploadImage({
+          pathOrBuffer: imagePath,
+          side: SIDE.A
+        })
         break
       case POST_SAVE_ACTION.CLEAR_BOTH:
         await this.removeBothImages()

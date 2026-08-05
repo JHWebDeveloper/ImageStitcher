@@ -29,9 +29,7 @@ function removeAllListeners<K extends keyof IpcChannel>(channel: K) {
 }
 
 export const electronAPI = {
-  setPreviewBounds(width: number, height: number) {
-    send(CHANNEL.SET_PREVIEW_BOUNDS, { width, height })
-  },
+  /* INVOKE */
 
   uploadImage(
     side: Side,
@@ -55,6 +53,16 @@ export const electronAPI = {
         imagePaths: files.map(webUtils.getPathForFile)
       } : {}
     )
+  },
+
+  isMergeResultReady() {
+    return invoke(CHANNEL.IS_MERGE_RESULT_READY)
+  },
+
+  /* SEND */
+
+  setPreviewBounds(width: number, height: number) {
+    send(CHANNEL.SET_PREVIEW_BOUNDS, { width, height })
   },
 
   swapImages() {
@@ -105,13 +113,15 @@ export const electronAPI = {
     send(CHANNEL.ADJUST_STITCH, opts)
   },
 
-  isMergeResultReady() {
-    return invoke(CHANNEL.IS_MERGE_RESULT_READY)
+  flattenImage(opts: SaveOptions) {
+    send(CHANNEL.FLATTEN_IMAGE, opts)
   },
 
   saveImage(opts: SaveOptions) {
     send(CHANNEL.SAVE_IMAGE, opts)
   },
+
+  /* LISTENERS */
 
   setDisplayStitchResponseListener(callback: (stitchResponse: StitchResponse) => void) {
     setListener(CHANNEL.DISPLAY_STITCH_RESULT, (_, stitchResponse: StitchResponse) => {

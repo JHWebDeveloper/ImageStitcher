@@ -1,3 +1,4 @@
+import { type WebContents } from 'electron'
 import { type FormatEnum } from 'sharp'
 
 import {
@@ -22,7 +23,8 @@ export interface SideOption {
 }
 
 export interface UploadImageOptions extends SideOption {
-  imagePath?: string
+  pathOrBuffer?: string | Buffer<ArrayBufferLike>
+  format?: UploadImageOptions['pathOrBuffer'] extends string ? never : keyof FormatEnum
   shouldReplace?: boolean
 }
 
@@ -85,7 +87,7 @@ export interface IpcChannel {
     payload: StitchResponse
   }
   [CHANNEL.FLATTEN_IMAGE]: {
-    payload: SaveOptions
+    payload: { format: keyof FormatEnum }
   }
   [CHANNEL.IS_MERGE_RESULT_READY]: {
     payload: {},

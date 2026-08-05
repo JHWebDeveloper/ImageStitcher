@@ -2,6 +2,7 @@ import { contextBridge, ipcRenderer, type IpcRendererEvent, webUtils } from 'ele
 
 import { CHANNEL, NAMESPACE } from './constants'
 import type { AdjustStitchOpts, AlignmentTypeValue, FitTypeValue, IpcChannel, SafeResponse, SaveOptions, StitchResponse, Side } from './types'
+import { FormatEnum } from 'sharp'
 
 function send<K extends keyof IpcChannel>(
   channel: K,
@@ -39,7 +40,7 @@ export const electronAPI = {
     return invoke(
       CHANNEL.UPLOAD_IMAGE,
       {
-        ...file ? { imagePath: webUtils.getPathForFile(file) } : {},
+        pathOrBuffer: file ? webUtils.getPathForFile(file) : void 0,
         side,
         shouldReplace
       }
@@ -113,8 +114,8 @@ export const electronAPI = {
     send(CHANNEL.ADJUST_STITCH, opts)
   },
 
-  flattenImage(opts: SaveOptions) {
-    send(CHANNEL.FLATTEN_IMAGE, opts)
+  flattenImage(format: keyof FormatEnum) {
+    send(CHANNEL.FLATTEN_IMAGE, { format })
   },
 
   saveImage(opts: SaveOptions) {

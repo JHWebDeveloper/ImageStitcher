@@ -17,8 +17,8 @@ const initState: StitchResult = {
 	hasSizeDifference: false,
 	fitType: DEFAULT_VALUE.FIT_TYPE,
 	imageAFormat: DEFAULT_VALUE.FORMAT,
-  imageAHasOriginal: false,
-  imageBHasOriginal: false
+  imageAHasOriginal: true,
+  imageBHasOriginal: true
 }
 
 export const ResponseContext = createContext(initState)

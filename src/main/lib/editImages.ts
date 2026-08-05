@@ -64,8 +64,10 @@ export async function prepareImage(
   if (image.flip) preparedImage = preparedImage.flip()
   if (image.flop) preparedImage = preparedImage.flop()
   if (image.angle) preparedImage = preparedImage.rotate(image.angle)
+
+  preparedImage = preparedImage.toFormat(isPreview ? PREVIEW_IMAGE_FORMAT : LOSSLESS_IMAGE_FORMAT)
   
-  return sharp(await preparedImage.toFormat(isPreview ? PREVIEW_IMAGE_FORMAT : LOSSLESS_IMAGE_FORMAT).toBuffer())
+  return sharp(await preparedImage.toBuffer())
 }
 
 function scaleImage(

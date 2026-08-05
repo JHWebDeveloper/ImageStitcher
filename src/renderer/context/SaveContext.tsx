@@ -16,20 +16,22 @@ interface SaveState extends SaveOptions {
 
 interface SaveContext extends SaveState {
   setFormat: Dispatch<SetStateAction<keyof FormatEnum>>
-  setSaveType: Dispatch<SetStateAction<SaveTypeValue>>
   setPostSaveAction: Dispatch<SetStateAction<PostSaveAction>>
-  toggleSaveOnDrop: UseToggleDispatch
+  getSaveOptions: () => SaveOptions
+  setSaveType: Dispatch<SetStateAction<SaveTypeValue>>
   toggleDeleteA: UseToggleDispatch
   toggleDeleteB: UseToggleDispatch
-  getSaveOptions: () => SaveOptions
+  toggleSaveOnDrop: UseToggleDispatch
+  toggleShouldWarn: UseToggleDispatch
 }
 
 const initSaveOptions = {
-  format: DEFAULT_VALUE.FORMAT,
-  saveType: DEFAULT_VALUE.SAVE_TYPE,
   deleteA: DEFAULT_VALUE.DELETE_A,
   deleteB: DEFAULT_VALUE.DELETE_B,
+  format: DEFAULT_VALUE.FORMAT,
   postSaveAction: DEFAULT_VALUE.POST_SAVE_ACTION,
+  saveType: DEFAULT_VALUE.SAVE_TYPE,
+  shouldWarn: DEFAULT_VALUE.SHOULD_WARN
 } satisfies SaveOptions
 
 const initState = {
@@ -39,13 +41,14 @@ const initState = {
 
 export const SaveContext = createContext<SaveContext>({
   ...initState,
+  getSaveOptions: () => initSaveOptions,
   setFormat() {},
-  setSaveType() {},
   setPostSaveAction() {},
-  toggleSaveOnDrop() {},
+  setSaveType() {},
   toggleDeleteA() {},
   toggleDeleteB() {},
-  getSaveOptions: () => initSaveOptions
+  toggleSaveOnDrop() {},
+  toggleShouldWarn() {}
 })
 
 export function SaveContextProvider({
@@ -53,19 +56,21 @@ export function SaveContextProvider({
   isImageBLoaded,
   children
 }: Props) {
-  const [ saveOnDrop, toggleSaveOnDrop ] = useToggle(initState.saveOnDrop)
-  const [ format, setFormat ] = useState<keyof FormatEnum>(imageAFormat || initState.format)
-  const [ saveType, setSaveType ] = useState<SaveTypeValue>(initState.saveType)
-  const [ postSaveAction, setPostSaveAction ] = useState<PostSaveAction>(initState.postSaveAction)
   const [ deleteA, toggleDeleteA ] = useToggle(initState.deleteA)
   const [ deleteB, toggleDeleteB ] = useToggle(initState.deleteB)
+  const [ format, setFormat ] = useState<keyof FormatEnum>(imageAFormat || initState.format)
+  const [ postSaveAction, setPostSaveAction ] = useState<PostSaveAction>(initState.postSaveAction)
+  const [ saveOnDrop, toggleSaveOnDrop ] = useToggle(initState.saveOnDrop)
+  const [ saveType, setSaveType ] = useState<SaveTypeValue>(initState.saveType)
+  const [ shouldWarn, toggleShouldWarn ] = useToggle(initState.shouldWarn)
 
   const getSaveOptions = (): SaveOptions => ({
-    format,
-    saveType,
     deleteA,
     deleteB,
-    postSaveAction
+    format,
+    postSaveAction,
+    saveType,
+    shouldWarn
   })
 
   useEffect(() => {
@@ -74,19 +79,21 @@ export function SaveContextProvider({
 
   return (
     <SaveContext value={{
-      saveOnDrop,
-      format,
-      saveType,
       deleteA,
       deleteB,
+      format,
       postSaveAction,
+      saveOnDrop,
+      saveType,
+      shouldWarn,
+      getSaveOptions,
       setFormat,
-      setSaveType,
       setPostSaveAction,
-      toggleSaveOnDrop,
+      setSaveType,
       toggleDeleteA,
       toggleDeleteB,
-      getSaveOptions
+      toggleSaveOnDrop,
+      toggleShouldWarn
     }}>
       { children }
     </SaveContext>

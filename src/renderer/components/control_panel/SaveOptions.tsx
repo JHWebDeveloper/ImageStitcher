@@ -4,6 +4,7 @@ import { FORMAT, LABEL, POST_SAVE_ACTION, SAVE_TYPE } from '../../constants'
 
 import { ElectronAPI } from '../../context/ElectronAPIContext'
 import { LabelContext } from '../../context/LabelContext'
+import { ResponseContext } from '../../context/ResponseContext'
 import { SaveContext } from '../../context/SaveContext'
 
 import ToggleComponent from '../utility_components/ToggleComponent'
@@ -11,14 +12,11 @@ import Select from '../utility_components/Select'
 import IconButton from '../utility_components/IconButton'
 import Checkbox from '../utility_components/Checkbox'
 
-interface Props {
-  isImageALoaded: boolean
-}
-
-export default function SaveOptions({ isImageALoaded }: Props) {
+export default function SaveOptions() {
   const { saveImage } = use(ElectronAPI)
-  const { getSaveOptions, saveType, ...saveCtx }= use(SaveContext)
   const [ labelA, labelB ] = use(LabelContext)
+  const { isImageALoaded, imageAHasOriginal, imageBHasOriginal } = use(ResponseContext)
+  const { getSaveOptions, saveType, ...saveCtx }= use(SaveContext)
 
   const isNewFile = saveType === SAVE_TYPE.NEW_FILE
 
@@ -26,6 +24,12 @@ export default function SaveOptions({ isImageALoaded }: Props) {
     [SAVE_TYPE.REPLACE_A]: `${LABEL.REPLACE} ${labelA}`,
     [SAVE_TYPE.REPLACE_B]: `${LABEL.REPLACE} ${labelB}`,
     [SAVE_TYPE.NEW_FILE]: LABEL.NEW_FILE
+  }
+
+  const saveTypeValues = {
+    ...imageAHasOriginal ? { [SAVE_TYPE.REPLACE_A]: SAVE_TYPE.REPLACE_A } : {},
+    ...imageBHasOriginal ? { [SAVE_TYPE.REPLACE_B]: SAVE_TYPE.REPLACE_B } : {},
+    [SAVE_TYPE.NEW_FILE]: SAVE_TYPE.NEW_FILE
   }
 
   const postSaveActionLabels = {
@@ -38,10 +42,16 @@ export default function SaveOptions({ isImageALoaded }: Props) {
 
   return (
     <div className="save-options">
-      <Checkbox
-        label={LABEL.SAVE_ON_DROP}
-        checked={saveCtx.saveOnDrop}
-        onChange={saveCtx.toggleSaveOnDrop} />
+      <fieldset>
+        <Checkbox
+          label={LABEL.SAVE_ON_DROP}
+          checked={saveCtx.saveOnDrop}
+          onChange={saveCtx.toggleSaveOnDrop} />
+        <Checkbox
+          label={LABEL.WARN}
+          checked={saveCtx.shouldWarn}
+          onChange={saveCtx.toggleShouldWarn} />
+      </fieldset>
       <Select
         value={saveCtx.format}
         onChange={saveCtx.setFormat}
@@ -51,15 +61,15 @@ export default function SaveOptions({ isImageALoaded }: Props) {
         value={saveType}
         onChange={saveCtx.setSaveType}
         optionLabels={saveTypeLabels}
-        optionValues={SAVE_TYPE} />
+        optionValues={saveTypeValues} />
       <fieldset name="delete-options">
-        <ToggleComponent shouldShow={isNewFile || saveType === SAVE_TYPE.REPLACE_B}>
+        <ToggleComponent shouldShow={imageAHasOriginal && (isNewFile || saveType === SAVE_TYPE.REPLACE_B)}>
           <Checkbox
             label={`${LABEL.DELETE} ${labelA}`}
             checked={saveCtx.deleteA}
             onChange={() => saveCtx.toggleDeleteA()} />
         </ToggleComponent>
-        <ToggleComponent shouldShow={isNewFile || saveType === SAVE_TYPE.REPLACE_A}>
+        <ToggleComponent shouldShow={imageBHasOriginal && (isNewFile || saveType === SAVE_TYPE.REPLACE_A)}>
           <Checkbox
             label={`${LABEL.DELETE} ${labelB}`}
             checked={saveCtx.deleteB}

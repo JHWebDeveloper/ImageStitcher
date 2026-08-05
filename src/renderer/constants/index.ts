@@ -1,7 +1,6 @@
 export * from '../../shared/constants'
 
 const IMAGE = 'Image'
-const CLEAR = 'CLEAR'
 
 export const LABEL = {
   ABOVE: 'Above',
@@ -15,6 +14,7 @@ export const LABEL = {
   CONTAIN: 'Contain',
   COVER: 'Cover',
   DELETE: 'Delete',
+  DELETE_ORIGINAL: 'Delete Original',
   DOWNSCALE: 'Downscale Largest',
   FLIP: 'Flip',
   FLOP: 'Flop',
@@ -44,6 +44,7 @@ export const LABEL = {
   UNLINK_CROP_SLIDERS: 'Unlink Crop Sliders',
   UPLOAD: 'Upload',
   UPSCALE: 'Upscale Smallest',
+  WARN: 'Warn',
   WEBP: 'WEBP'
 } as const
 

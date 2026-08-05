@@ -10,6 +10,7 @@ import { SaveContextProvider } from '../context/SaveContext'
 
 import ImageStitch from './image_stitch/ImageStitch'
 import ControlPanel from './control_panel/ControlPanel'
+import SideBar from './control_panel/SideBar'
 
 function Main() {
 	const { setErrorListener, removeErrorListener } = use(ElectronAPI)
@@ -20,9 +21,7 @@ function Main() {
       toastr.error(err.message)
     })
 
-		return () => {
-			removeErrorListener()
-		}
+		return removeErrorListener
 	}, [])
 
 	return (
@@ -31,8 +30,11 @@ function Main() {
 				<SaveContextProvider
 					imageAFormat={imageAFormat}
 					isImageBLoaded={isImageBLoaded}>
-					<ImageStitch />
-					<ControlPanel />
+					<div className="stage">
+						<ImageStitch />
+						<ControlPanel />
+					</div>
+					<SideBar />
 				</SaveContextProvider>
 			</LabelContextProvider>
 		</main>

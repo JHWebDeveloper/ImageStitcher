@@ -1,12 +1,10 @@
 export * from '../../shared/constants'
 
-const IMAGE = 'Image'
-
 export const LABEL = {
   ABOVE: 'Above',
   ALIGN_TO: 'Align to',
   BELOW: 'Below',
-  BOTH_IMAGES: `Both ${IMAGE}s`,
+  BOTH_IMAGES: 'Both Images',
   BOTTOM: 'Bottom',
   CENTER: 'Center',
   CLEAR: 'Clear',
@@ -16,9 +14,10 @@ export const LABEL = {
   DELETE: 'Delete',
   DELETE_ORIGINAL: 'Delete Original',
   DOWNSCALE: 'Downscale Largest',
+  FLATTEN: 'Flatten',
   FLIP: 'Flip',
   FLOP: 'Flop',
-  IMAGE,
+  IMAGE: 'Image',
   INSERT: 'Insert',
   JPEG: 'JPEG',
   LANDSCAPE: 'Landscape',
@@ -32,12 +31,13 @@ export const LABEL = {
   PORTRAIT: 'Portrait',
   RELOAD: 'Reload',
   REPLACE: 'Replace',
+  REPLACE_ORIGINAL: 'Replace Original',
   REMOVE: 'Remove',
   RIGHT: 'Right',
   ROTATE: 'Rotate',
-  SAVE_IMAGE: `Save ${IMAGE}`,
+  SAVE_IMAGE: 'Save Image',
   SAVE_ON_DROP: 'Save on Drop',
-  SWAP_IMAGES: `Swap ${IMAGE}s`,
+  SWAP_IMAGES: 'Swap Images',
   SWITCH_TO: 'Switch to',
   TIFF: 'TIFF',
   TOP: 'Top',

@@ -47,7 +47,7 @@ export function setIpcRoutes(imageStitcher: ImageStitchData) {
   async function sendStitchResult(evt: IpcMainEvent | IpcMainInvokeEvent) {
     try {
       send(evt, CHANNEL.DISPLAY_STITCH_RESULT, {
-        result: await imageStitcher?.getPreviewState(),
+        result: await imageStitcher.getPreviewState(),
         timestamp: Date.now()
       })
     } catch (cause) {
@@ -70,7 +70,7 @@ export function setIpcRoutes(imageStitcher: ImageStitchData) {
 
   setHandler(CHANNEL.UPLOAD_IMAGE, async (evt, opts) => {
     try {
-      await imageStitcher?.uploadImage(opts, evt.sender)
+      await imageStitcher.uploadImage(opts, evt.sender)
       await sendStitchResult(evt)
     } catch (err) {
       sendErrorMessage(evt, err)
@@ -79,7 +79,7 @@ export function setIpcRoutes(imageStitcher: ImageStitchData) {
 
   setHandler(CHANNEL.UPLOAD_IMAGES, async (evt, opts) => {
     try {
-      await imageStitcher?.uploadImages(opts.imagePaths, evt.sender)
+      await imageStitcher.uploadImages(opts.imagePaths, evt.sender)
       await sendStitchResult(evt)
     } catch (err) {
       sendErrorMessage(evt, err)
@@ -88,7 +88,7 @@ export function setIpcRoutes(imageStitcher: ImageStitchData) {
 
   setListener(CHANNEL.SWAP_IMAGES, async evt => {
     try {
-      await imageStitcher?.swap()
+      await imageStitcher.swap()
       await sendStitchResult(evt)
     } catch (err) {
       sendErrorMessage(evt, err)
@@ -97,7 +97,7 @@ export function setIpcRoutes(imageStitcher: ImageStitchData) {
 
   setListener(CHANNEL.CLEAR_IMAGE, async (evt, opts) => {
     try {
-      await imageStitcher?.removeImage(opts)
+      await imageStitcher.removeImage(opts)
       await sendStitchResult(evt)
     } catch (err) {
       sendErrorMessage(evt, err)
@@ -106,7 +106,7 @@ export function setIpcRoutes(imageStitcher: ImageStitchData) {
 
   setListener(CHANNEL.CLEAR_BOTH_IMAGES, async evt => {		
     try {
-      await imageStitcher?.removeBothImages()
+      await imageStitcher.removeBothImages()
       await sendStitchResult(evt)
     } catch (err) {
       sendErrorMessage(evt, err)
@@ -115,7 +115,7 @@ export function setIpcRoutes(imageStitcher: ImageStitchData) {
 
   setListener(CHANNEL.TOGGLE_ORIENTATION, async (evt, opts) => {		
     try {
-      await imageStitcher?.toggleOrientation(opts)
+      await imageStitcher.toggleOrientation(opts)
       await sendStitchResult(evt)
     } catch (err) {
       sendErrorMessage(evt, err)
@@ -123,7 +123,7 @@ export function setIpcRoutes(imageStitcher: ImageStitchData) {
   })
 
   setListener(CHANNEL.ROTATE_IMAGE, async (evt, opts) => {
-    imageStitcher?.rotateImage(opts)
+    imageStitcher.rotateImage(opts)
 
     try {
       await sendStitchResult(evt)
@@ -133,7 +133,7 @@ export function setIpcRoutes(imageStitcher: ImageStitchData) {
   })
 
   setListener(CHANNEL.TOGGLE_FLIP, async (evt, opts) => {
-    imageStitcher?.flipImage(opts)
+    imageStitcher.flipImage(opts)
 
     try {
       await sendStitchResult(evt)
@@ -143,7 +143,7 @@ export function setIpcRoutes(imageStitcher: ImageStitchData) {
   })
 
   setListener(CHANNEL.TOGGLE_FLOP, async (evt, opts) => {
-    imageStitcher?.flopImage(opts)
+    imageStitcher.flopImage(opts)
 
     try {
       await sendStitchResult(evt)
@@ -193,7 +193,7 @@ export function setIpcRoutes(imageStitcher: ImageStitchData) {
   })
 
   setListener(CHANNEL.ADJUST_STITCH, async (evt, opts) => {
-    imageStitcher?.adjustStitch(opts)
+    imageStitcher.adjustStitch(opts)
 
     try {
       await sendStitchResult(evt)
@@ -203,12 +203,21 @@ export function setIpcRoutes(imageStitcher: ImageStitchData) {
   })
 
   setHandler(CHANNEL.IS_MERGE_RESULT_READY, () => (
-    imageStitcher?.B.isLoaded ?? false
+    imageStitcher.B.isLoaded ?? false
   ))
+
+  setListener(CHANNEL.FLATTEN_IMAGE, async (evt, { format }) => {
+    try {
+      await imageStitcher.flatten(format)
+      await sendStitchResult(evt)
+    } catch (err) {
+      sendErrorMessage(evt, err)
+    }
+  })
 
   setListener(CHANNEL.SAVE_IMAGE, async (evt, data) => {
     try {
-      await imageStitcher?.save(evt.sender, data)
+      await imageStitcher.save(evt.sender, data)
       await sendStitchResult(evt)
     } catch (err) {
       sendErrorMessage(evt, err)

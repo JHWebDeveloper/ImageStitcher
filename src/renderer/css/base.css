@@ -1,3 +1,24 @@
+/* -~-~-~- PROPERTIES -~-~-~- */
+
+@property --bg-color {
+	syntax: "<color>";
+	inherits: false;
+	initial-value: #eee;
+}
+
+@property --primary-color {
+	syntax: "<color>";
+	inherits: false;
+	initial-value: #4c4c4c;
+}
+
+@property --secondary-color {
+	syntax: "<color>";
+	inherits: false;
+	initial-value: #7c7c7c;
+}
+
+/* -~-~-~- GLOBAL STYLES -~-~-~- */
 
 body {
 	background-color: var(--bg-color);
@@ -44,8 +65,6 @@ button > span {
 	pointer-events: none;
 	color: inherit;
 }
-
-/* -~-~-~- GLOBAL STYLE -~-~-~- */
 
 main {
   display: grid;

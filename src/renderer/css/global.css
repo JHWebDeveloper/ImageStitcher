@@ -1,44 +1,7 @@
-/* -~-~-~- FONT -~-~-~- */
+@layer font, framework, reset, base;
 
-@font-face {
-	font-family: Gotham;
-	src: url('../font/Gotham-Book.woff2') format('woff2');
-	font-weight: 400;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: Gotham;
-	src: url('../font/Gotham-Medium.woff2') format('woff2');
-	font-weight: 500;
-	font-style: normal;
-}
-
-/* -~-~-~- PROPERTIES -~-~-~- */
-
-@property --bg-color {
-	syntax: "<color>";
-	inherits: false;
-	initial-value: #eee;
-}
-
-@property --primary-color {
-	syntax: "<color>";
-	inherits: false;
-	initial-value: #4c4c4c;
-}
-
-@property --secondary-color {
-	syntax: "<color>";
-	inherits: false;
-	initial-value: #7c7c7c;
-}
-
-/* -~-~-~- LAYERS -~-~-~- */
-
-@layer framework, reset, base;
-
-@import "toastr.css" framework;
-@import "material_symbols_rounded.css" framework;
-@import "reset.css" reset;
-@import "base.css" base;
+@import "font.css" layer(font);
+@import "toastr.css" layer(framework);
+@import "material_symbols_rounded.css" layer(framework);
+@import "reset.css" layer(reset);
+@import "base.css" layer(base);

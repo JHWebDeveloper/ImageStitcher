@@ -17,7 +17,6 @@ const config: webpack.Configuration = {
 			'react',
 			'react-dom',
 			'prop-types',
-			path.join(CSS_PATH, 'material_symbols_rounded.css'),
 			path.join(CSS_PATH, 'global.css')
 		],
 		...PAGES.slice(1).reduce((acc, pageName) => (

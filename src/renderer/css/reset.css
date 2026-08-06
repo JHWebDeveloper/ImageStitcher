@@ -1,0 +1,49 @@
+	*, *::before, *::after {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+		user-select: none;
+	}
+
+	html {
+		text-size-adjust: 100%;
+		interpolate-size: allow-keywords;
+		scroll-behavior: smooth;
+	}
+
+	body {
+		min-block-size: 100svb;
+		min-inline-size: 320px;
+		-webkit-font-smoothing: antialiased;
+	}
+
+	p, h1, h2, h3, h4, h5, h6, label, li {
+		overflow-wrap: break-word;
+	}
+
+	p, h1, h2, h3, h4, h5, h6, li {
+		user-select: text;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		text-wrap: balance;
+		margin-block: 0;
+	}
+
+	p { text-wrap: pretty; }
+
+	input, select { field-sizing: content; }
+
+	button {
+		border: none;
+		background: none;
+		color: currentColor;
+	}
+
+	img { display: block; }
+
+	svg:not([fill]) { fill: currentColor; }
+
+	#root {
+		isolation: isolate;
+	}

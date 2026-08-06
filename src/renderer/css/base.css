@@ -30,8 +30,6 @@ body {
 	block-size: 100svb;
 }
 
-fieldset { border: 0 }
-
 input:is([type="checkbox"], [type="radio"]) {
 	accent-color: var(--primary-color);
 }
@@ -243,9 +241,7 @@ main {
 	block-size: 100%;
 }
 
-.save-options {
-	grid-row: 2;
-}
+.save-options { grid-row: 2; }
 
 .save-options > fieldset {
 	display: flex;
@@ -258,6 +254,11 @@ main {
 	display: inherit;
 	align-items: inherit;
 	column-gap: 5px;
+}
+
+.save-buttons {
+  display: inherit;
+  grid-template-columns: 1fr 1fr;
 }
 
 /* -~-~-~- SLIDER -~-~-~- */

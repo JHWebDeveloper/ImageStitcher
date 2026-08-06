@@ -32,6 +32,8 @@
 
 	p { text-wrap: pretty; }
 
+  fieldset { border: 0 }
+
 	input, select { field-sizing: content; }
 
 	button {

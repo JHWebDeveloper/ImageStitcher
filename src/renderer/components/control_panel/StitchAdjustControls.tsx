@@ -134,6 +134,7 @@ export default function StitchAdjustControls({ isVertical }: Props) {
         title={isLinked ? LABEL.LINK_CROP_SLIDERS : LABEL.UNLINK_CROP_SLIDERS}
         onClick={() => toggleIsLinked()} />
 			<NumberInput
+				name="slider-input"
 				value={cropImageAValueForInput}
 				defaultValue={MIN}
 				onChange={setLeftFromInput}
@@ -156,6 +157,7 @@ export default function StitchAdjustControls({ isVertical }: Props) {
 				}}
 				markers={[MAX]} />
 			<NumberInput
+				name="slider-input"
 				value={cropImageBValueForInput}
 				defaultValue={MIN}
 				onChange={setRightFromInput}

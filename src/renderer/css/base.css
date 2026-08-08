@@ -18,6 +18,12 @@
 	initial-value: #7c7c7c;
 }
 
+@property --tertiary-color {
+	syntax: "<color>";
+	inherits: false;
+	initial-value: #ccc;
+}
+
 /* -~-~-~- GLOBAL STYLES -~-~-~- */
 
 body {
@@ -28,6 +34,13 @@ body {
 
 #root {
 	block-size: 100svb;
+}
+
+main {
+  display: grid;
+  inline-size: 100%;
+  block-size: 100%;
+	grid-template-columns: auto min-content;
 }
 
 input:is([type="checkbox"], [type="radio"]) {
@@ -48,33 +61,38 @@ input[type="color"] {
 	&::-webkit-color-swatch { border: none; }
 }
 
-select, label {
-	font-size: 0.875em;
+select, label, legend {
+	font-size: 0.875rem;
   text-wrap: nowrap;
 }
 
 select {
+  display: block;
 	border-radius: 4px;
 	background-color: var(--primary-color);
-	color: #fff;
+	color: var(--bg-color);
 }
+
+label > select {
+  margin-block-start: 2px;
+}
+
+legend,
+:not(fieldset) > label {
+  display: block;
+  font-weight: 500;
+}
+
+legend { margin-block-end: 5px; }
 
 button > span {
 	pointer-events: none;
 	color: inherit;
 }
 
-main {
-  display: grid;
-  inline-size: 100%;
-  block-size: 100%;
-	grid-template-columns: auto min-content;
-}
-
 .stage,
 .sidebar {
 	display: inherit;
-	grid-auto-flow: row;
 }
 
 .stage {
@@ -212,7 +230,10 @@ main {
 	position: relative;
 	grid-column: 2;
 	grid-auto-rows: min-content;
+  align-content: center;
+  gap: 20px;
 	padding: 12px;
+  min-inline-size: 250px;
 
 	&::before {
 		content: '';
@@ -220,7 +241,7 @@ main {
 		top: var(--spacing);
 		width: 1px;
 		height: calc(100% - var(--spacing) * 2);
-		background-color: var(--secondary-color);
+		background-color: var(--tertiary-color);
 	}
 }
 
@@ -228,7 +249,7 @@ main {
 .save-options {
 	display: inherit;
 	grid-auto-flow: inherit;
-	column-gap: 10px;
+	gap: inherit;
 }
 
 .fit-options > input[type="number"] {
@@ -244,16 +265,15 @@ main {
 .save-options { grid-row: 2; }
 
 .save-options > fieldset {
-	display: flex;
-	flex-direction: column;
-	align-content: center;
-	inline-size: 120px;
-}
+  display: grid;
+  grid-template-columns: min-content auto;
+  gap: 5px;
 
-.save-options label {
-	display: inherit;
-	align-items: inherit;
-	column-gap: 5px;
+  & > label {
+    display: inherit;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+  }
 }
 
 .save-buttons {

@@ -17,18 +17,12 @@ export const SAVE_TYPE = {
   NEW_FILE: 'NEW_FILE'
 } as const
 
-export const SAVE_TYPE_SINGLE_IMAGE = (() => {
-  const { [SAVE_TYPE.REPLACE_B]: omit, ...rest } = SAVE_TYPE
-  
-  return { ...rest } as const
-})()
-
 export const POST_SAVE_ACTION = {
-  NONE: 'NONE',
-  LOAD_RESULT: 'LOAD_RESULT',
   CLEAR_BOTH: 'CLEAR_BOTH',
-  CLEAR_A: 'CLEAR_A',
-  CLEAR_B: 'CLEAR_B'
+  LOAD_RESULT: 'LOAD_RESULT',
+  NONE: 'NONE',
+  CLEAR_B: 'CLEAR_B',
+  CLEAR_A: 'CLEAR_A'
 } as const
 
 export const FIT_TYPE = {

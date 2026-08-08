@@ -43,12 +43,12 @@ main {
 	grid-template-columns: auto min-content;
 }
 
-input:is([type="checkbox"], [type="radio"]) {
-	accent-color: var(--primary-color);
+input[type="number"] {
+	min-inline-size: 50px;
 }
 
-input[type="number"] {
-	inline-size: 120px;
+input:is([type="checkbox"], [type="radio"]) {
+	accent-color: var(--primary-color);
 }
 
 input[type="color"] {
@@ -264,16 +264,28 @@ button > span {
 
 .save-options { grid-row: 2; }
 
-.save-options > fieldset {
-  display: grid;
-  grid-template-columns: min-content auto;
-  gap: 5px;
+fieldset {
+	display: grid;
+	gap: 5px;
 
-  & > label {
-    display: inherit;
-    grid-column: 1 / -1;
-    grid-template-columns: subgrid;
-  }
+	&:has(input:is([type="checkbox"], [type="radioset"])) {
+		grid-template-columns: min-content auto;
+
+		& > label {
+			display: inherit;
+			grid-column: 1 / -1;
+			grid-template-columns: subgrid;
+		}
+	}
+}
+
+fieldset:is([name="alignment-options"], [name="background-color"]) {
+	grid-auto-columns: min-content;
+	grid-auto-flow: column;
+
+	& > legend {
+		grid-column: 1 / -1;
+	}
 }
 
 .save-buttons {

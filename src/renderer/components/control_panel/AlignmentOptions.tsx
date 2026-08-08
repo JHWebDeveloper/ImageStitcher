@@ -17,7 +17,8 @@ export default function AlignmentOptions({ isVertical }: Props) {
     : [LABEL.TOP, LABEL.BOTTOM, 'vertical']
 
   return (
-    <div className="alignment-options">
+    <fieldset name="alignment-options">
+      <legend>{LABEL.ALIGNMENT}</legend>
       <IconButton
         icon={`align_${horizontalOrVertical}_${labelStart}`}
         title={`${LABEL.ALIGN_TO} ${labelStart}`}
@@ -36,6 +37,6 @@ export default function AlignmentOptions({ isVertical }: Props) {
         onClick={() => {
           setAlignmentType(ALIGNMENT_TYPE.END)
         }} />
-    </div>
+    </fieldset>
   )
 }

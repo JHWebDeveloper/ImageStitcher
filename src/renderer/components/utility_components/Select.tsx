@@ -1,15 +1,30 @@
-import React, { type ChangeEvent, type Dispatch, type SetStateAction, useEffect, useId } from 'react'
+import React, { type ChangeEvent, type Dispatch, type PropsWithChildren, type SetStateAction, useEffect, useId } from 'react'
 
 import { assertsIsKeyInObject, assertsIsStringInUnion } from '../../utilities'
 
+interface LabelProps extends PropsWithChildren {
+  label: string | undefined
+}
+
 interface SelectProps<T> {
+  label?: string
   value?: T
   onChange: Dispatch<SetStateAction<T | undefined | null>> | Function
   optionLabels: Record<string, string>
   optionValues: Record<string, T>
 }
 
+function Label({ label, children }: LabelProps) {
+  return label ? (
+    <label>
+      { label }
+      { children }
+    </label>
+  ) : children
+}
+
 export default function Select<const T extends string>({
+  label,
   value,
   onChange,
   optionLabels,
@@ -29,13 +44,16 @@ export default function Select<const T extends string>({
   }, [isValidSelection])
   
   return isValidSelection ? (
-    <select
-      value={value}
-      onChange={onChangeFromEvent}>
-      {Object.entries(optionValues).map(([ key, val ], i) => {
-        assertsIsKeyInObject(key, optionLabels)
-        return <option key={`${id}_${i}`} value={val}>{optionLabels[key]}</option>
-      })}
-    </select>
+    <Label label={label}>
+      <select
+        {...label ? { id } : {}}
+        value={value}
+        onChange={onChangeFromEvent}>
+        {Object.entries(optionValues).map(([ key, val ], i) => {
+          assertsIsKeyInObject(key, optionLabels)
+          return <option key={`${id}_${i}`} value={val}>{optionLabels[key]}</option>
+        })}
+      </select>
+    </Label>
   ) : <></>
 }

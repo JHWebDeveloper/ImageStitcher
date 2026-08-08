@@ -3,6 +3,7 @@ import React, { type ChangeEvent, type KeyboardEvent, useState } from 'react'
 import { round } from '../../utilities'
 
 interface Props {
+  name?: string
   value: number
   defaultValue?: number
   min?: number
@@ -16,6 +17,7 @@ function forbidNegative(e: KeyboardEvent) {
 }
 
 export default function NumberInput({
+  name,
   value,
   defaultValue = 0,
   min = 0,
@@ -54,6 +56,7 @@ export default function NumberInput({
   return (
     <input
       type="number"
+      name={name}
       value={isEmpty ? '' : value}
       onChange={onChangeFromEvent}
       onBlur={onBlur}

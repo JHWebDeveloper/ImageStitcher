@@ -37,10 +37,13 @@ body {
 }
 
 main {
-  display: grid;
+  display: flex;
   inline-size: 100%;
   block-size: 100%;
-	grid-template-columns: auto min-content;
+
+	&.left-aligned {
+		flex-direction: row-reverse;
+	}
 }
 
 input[type="number"] {
@@ -71,10 +74,10 @@ select {
 	border-radius: 4px;
 	background-color: var(--primary-color);
 	color: var(--bg-color);
-}
 
-label > select {
-  margin-block-start: 2px;
+	label > & {
+		margin-block-start: 2px;
+	}
 }
 
 legend,
@@ -92,10 +95,11 @@ button > span {
 
 .stage,
 .sidebar {
-	display: inherit;
+	display: grid;
 }
 
 .stage {
+	flex: 1;
 	grid-template-rows: auto 40px 60px;
 }
 
@@ -243,6 +247,10 @@ button > span {
 		height: calc(100% - var(--spacing) * 2);
 		background-color: var(--tertiary-color);
 	}
+
+	.left-aligned &::before {
+		right: 0;
+	}
 }
 
 .fit-options,
@@ -277,14 +285,14 @@ fieldset {
 			grid-template-columns: subgrid;
 		}
 	}
-}
 
-fieldset:is([name="alignment-options"], [name="background-color"]) {
-	grid-auto-columns: min-content;
-	grid-auto-flow: column;
+	&:is([name="alignment-options"], [name="background-color"]) {
+		grid-auto-columns: min-content;
+		grid-auto-flow: column;
 
-	& > legend {
-		grid-column: 1 / -1;
+		& > legend {
+			grid-column: 1 / -1;
+		}
 	}
 }
 

@@ -38,7 +38,7 @@ export default function ImageDrop({
         await uploadImage(side, files[0], shouldReplace)
       }
 
-      // if (saveOnDrop && await isMergeResultReady()) saveImage(getSaveOptions())
+      if (saveOnDrop && await isMergeResultReady()) saveImage(getSaveOptions())
     } catch {
       return
     }

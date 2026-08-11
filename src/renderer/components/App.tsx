@@ -7,7 +7,7 @@ import { DEFAULT_VALUE } from '../constants'
 import { useToggle } from '../hooks'
 
 import { ElectronAPI, ElectronAPIProvider } from '../context/ElectronAPIContext'
-import { LabelContextProvider } from '../context/LabelContext'
+import { LayoutContextProvider } from '../context/LayoutContext'
 import { ResponseContext, ResponseContextProvider } from '../context/ResponseContext'
 import { SaveContextProvider } from '../context/SaveContext'
 
@@ -30,7 +30,7 @@ function Main() {
 
 	return (
 		<main className={isLeftLayout ? 'left-aligned' : ''}>
-			<LabelContextProvider isVertical={isVertical}>
+			<LayoutContextProvider isVertical={isVertical}>
 				<SaveContextProvider
 					imageAFormat={imageAFormat}
 					isImageBLoaded={isImageBLoaded}>
@@ -42,7 +42,7 @@ function Main() {
 						isLeftLayout={isLeftLayout}
 						toggleIsLeftLayout={toggleIsLeftLayout} />
 				</SaveContextProvider>
-			</LabelContextProvider>
+			</LayoutContextProvider>
 		</main>
 	)
 }

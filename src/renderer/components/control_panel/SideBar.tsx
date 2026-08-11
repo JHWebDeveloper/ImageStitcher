@@ -1,18 +1,16 @@
-import React from 'react'
+import React, { use } from 'react'
 
 import { LABEL } from '../../constants'
-import { UseToggleDispatch } from '../../types'
+
+import { LayoutContext } from '../../context/LayoutContext'
 
 import FitOptions from './FitOptions'
 import SaveOptions from './SaveOptions'
 import IconButton from '../utility_components/IconButton'
 
-interface Props {
-  isLeftLayout: boolean,
-  toggleIsLeftLayout: UseToggleDispatch
-}
+export default function SideBar() {
+  const { isLeftLayout, toggleIsLeftLayout } = use(LayoutContext)
 
-export default function SideBar({ isLeftLayout, toggleIsLeftLayout }: Props) {
   return (
     <div className="sidebar">
       <FitOptions />

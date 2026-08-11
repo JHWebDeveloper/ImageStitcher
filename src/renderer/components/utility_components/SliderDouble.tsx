@@ -143,7 +143,7 @@ export default function SliderDouble({
             trackRef={trackRef}
             {...commonProps} />
         </span>
-        <ToggleComponent shouldShow={arrayIsNullOrEmpty(markers)}>
+        <ToggleComponent shouldShow={!arrayIsNullOrEmpty(markers)}>
           <SliderMarkers
             markers={markers}
             min={min}

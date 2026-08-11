@@ -3,6 +3,9 @@ import toastr from 'toastr'
 
 import '../css/global.css'
 
+import { DEFAULT_VALUE } from '../constants'
+import { useToggle } from '../hooks'
+
 import { ElectronAPI, ElectronAPIProvider } from '../context/ElectronAPIContext'
 import { LabelContextProvider } from '../context/LabelContext'
 import { ResponseContext, ResponseContextProvider } from '../context/ResponseContext'
@@ -15,6 +18,7 @@ import SideBar from './control_panel/SideBar'
 function Main() {
 	const { setErrorListener, removeErrorListener } = use(ElectronAPI)
 	const { imageAFormat, isImageBLoaded, isVertical } = use(ResponseContext)
+	const [ isLeftLayout, toggleIsLeftLayout ] = useToggle(DEFAULT_VALUE.LEFT_ALIGNED)
 
 	useEffect(() => {
 		setErrorListener((err: Error) => {
@@ -25,7 +29,7 @@ function Main() {
 	}, [])
 
 	return (
-		<main>
+		<main className={isLeftLayout ? 'left-aligned' : ''}>
 			<LabelContextProvider isVertical={isVertical}>
 				<SaveContextProvider
 					imageAFormat={imageAFormat}
@@ -34,7 +38,9 @@ function Main() {
 						<ImageStitch />
 						<ControlPanel />
 					</div>
-					<SideBar />
+					<SideBar
+						isLeftLayout={isLeftLayout}
+						toggleIsLeftLayout={toggleIsLeftLayout} />
 				</SaveContextProvider>
 			</LabelContextProvider>
 		</main>

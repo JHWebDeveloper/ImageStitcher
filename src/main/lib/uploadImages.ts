@@ -5,7 +5,7 @@ import type { FormatEnum } from 'sharp'
 
 import { DEFAULT_VALUE, FIT_TYPE, FORMAT, POST_SAVE_ACTION, PREVIEW_IMAGE_FORMAT, SIDE, UPLOADS_PATH } from '../constants'
 import type { AdjustStitchOpts, AlignmentTypeValue, FitTypeValue, RotateOptions, SaveOptions, SideOption, StitchOptions, StitchResult, StitchResultRaw, Side, UploadImageOptions } from '../types'
-import { arrayIsNullOrEmpty, hexToRgb, swapPropertiesMutative, xor } from '../utilities'
+import { arrayIsNullOrEmpty, doesFileExist, hexToRgb, swapPropertiesMutative, xor } from '../utilities'
 
 import { emptyUploadDirectory, selectImageDialog } from './fileHandlers'
 import { convertBufferToBase64, getFormatFromBuffer, prepareImage, renderSingleImage, stitchImages } from './editImages'
@@ -97,9 +97,9 @@ export class ImageUploadData {
   }
 
   async removeImage() {
-    if (!this.srcPath) return
-
-    await fsp.unlink(this.srcPath)
+    if (this.srcPath && await doesFileExist(this.srcPath)) {
+      await fsp.unlink(this.srcPath)
+    }
 
     this.resetMetadata()
   }
@@ -308,7 +308,7 @@ export class ImageStitchData implements Record<Side, ImageUploadData> {
       isImageASideways: this.A.isSideways,
       isImageBSideways: this.B.isSideways,
       fitType: this.fitType,
-      hasSizeDifference: hasSizeDifference,
+      hasSizeDifference,
       imageAFormat: getImageAFormat(imageAFormat),
       imageAHasOriginal: this.A.hasOriginal,
       imageBHasOriginal: this.B.hasOriginal

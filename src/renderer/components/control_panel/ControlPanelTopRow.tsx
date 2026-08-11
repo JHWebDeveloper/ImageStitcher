@@ -4,7 +4,7 @@ import { LABEL, SIDE } from '../../constants'
 
 import { ElectronAPI } from '../../context/ElectronAPIContext'
 import { ResponseContext } from '../../context/ResponseContext'
-import { LabelContext } from '../../context/LabelContext'
+import { LayoutContext } from '../../context/LayoutContext'
 
 import ToggleComponent from '../utility_components/ToggleComponent'
 import RotationControls from './RotationControls'
@@ -14,7 +14,7 @@ import IconButton from '../utility_components/IconButton'
 export default function ControlPanelTopRow() {
   const { clearImage, uploadImage, uploadImages } = use(ElectronAPI)
   const { isImageBLoaded, isVertical, ...responseCtx }  = use(ResponseContext)
-  const [ labelA, labelB ] = use(LabelContext)
+  const { labelA, labelB } = use(LayoutContext)
 
   return (
     <>

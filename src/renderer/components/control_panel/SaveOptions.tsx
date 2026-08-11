@@ -16,7 +16,7 @@ import Checkbox from '../utility_components/Checkbox'
 export default function SaveOptions() {
   const { flattenImage, saveImage } = use(ElectronAPI)
   const { labelA, labelB } = use(LayoutContext)
-  const { isImageALoaded, imageAHasOriginal, imageBHasOriginal } = use(ResponseContext)
+  const { imageAHasOriginal, imageBHasOriginal, isImageALoaded, isImageBLoaded, isVertical } = use(ResponseContext)
   const { getSaveOptions, format, saveType, ...saveCtx }= use(SaveContext)
 
   const isNewFile = saveType === SAVE_TYPE.NEW_FILE
@@ -86,11 +86,14 @@ export default function SaveOptions() {
           onChange={saveCtx.toggleShouldWarn} />
       </fieldset>
       <div className="save-buttons">
-        <IconButton
-          icon="cell_merge"
-          title={LABEL.FLATTEN}
-          onClick={() => flattenImage(format)}
-          disabled={!isImageALoaded} />
+        <ToggleComponent shouldShow={isImageBLoaded}>
+          <IconButton
+            icon="cell_merge"
+            iconAngle={isVertical ? 90 : 0}
+            title={LABEL.FLATTEN}
+            onClick={() => flattenImage(format)}
+            disabled={!isImageALoaded} />
+        </ToggleComponent>
         <IconButton
           icon="save"
           title={LABEL.SAVE_IMAGE}

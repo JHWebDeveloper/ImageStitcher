@@ -7,7 +7,7 @@ import { assertsIsDOMRect } from '../../utilities'
 
 import { ElectronAPI } from '../../context/ElectronAPIContext'
 import { ResponseContext } from '../../context/ResponseContext'
-import { LabelContext } from '../../context/LabelContext'
+import { LayoutContext } from '../../context/LayoutContext'
 
 import ToggleComponent from '../utility_components/ToggleComponent'
 import ImageDrop from './ImageDrop'
@@ -24,7 +24,7 @@ function onDragLeave(e: DivDragEvent): void {
 export default function ImageStitch() {
   const { setPreviewBounds, uploadImages } = use(ElectronAPI)
   const { base64, isImageALoaded, isImageBLoaded, isVertical } = use(ResponseContext)
-  const [ labelA, labelB ] = use(LabelContext)
+  const { labelA, labelB } = use(LayoutContext)
   const previewWindow = useRef<HTMLDivElement>(null)
 
   const [ setPreviewBoundsDebounced, initPreviewBounds ] = useDebounce(() => {

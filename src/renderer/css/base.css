@@ -248,7 +248,7 @@ button > span {
 		background-color: var(--tertiary-color);
 	}
 
-	.left-aligned &::before {
+	.left-aligned > &::before {
 		right: 0;
 	}
 }

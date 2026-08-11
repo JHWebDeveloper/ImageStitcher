@@ -3,7 +3,7 @@ import React, { use } from 'react'
 import { FORMAT, LABEL, POST_SAVE_ACTION, SAVE_TYPE } from '../../constants'
 
 import { ElectronAPI } from '../../context/ElectronAPIContext'
-import { LabelContext } from '../../context/LabelContext'
+import { LayoutContext } from '../../context/LayoutContext'
 import { ResponseContext } from '../../context/ResponseContext'
 import { SaveContext } from '../../context/SaveContext'
 
@@ -15,7 +15,7 @@ import Checkbox from '../utility_components/Checkbox'
 
 export default function SaveOptions() {
   const { flattenImage, saveImage } = use(ElectronAPI)
-  const [ labelA, labelB ] = use(LabelContext)
+  const { labelA, labelB } = use(LayoutContext)
   const { isImageALoaded, imageAHasOriginal, imageBHasOriginal } = use(ResponseContext)
   const { getSaveOptions, format, saveType, ...saveCtx }= use(SaveContext)
 

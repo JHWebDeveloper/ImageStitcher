@@ -6,16 +6,18 @@ interface Props extends PropsWithChildren {
   isVertical: boolean
 }
 
-type LabelPair = typeof LABEL_LR_VALUES | typeof LABEL_TB_VALUES
+type LayoutContext = typeof LABEL_LR_VALUES | typeof LABEL_TB_VALUES
 
-export const LabelContext = createContext<LabelPair>(LABEL_LR_VALUES)
+export const LayoutContext = createContext<LayoutContext>(LABEL_LR_VALUES)
 
-export function LabelContextProvider({ isVertical, children }: Props) {
+export function LayoutContextProvider({ isVertical, children }: Props) {
   const labels = isVertical ? LABEL_TB_VALUES : LABEL_LR_VALUES
 
   return (
-    <LabelContext value={labels}>
+    <LayoutContext value={{
+      ...labels
+    }}>
       { children }
-    </LabelContext>
+    </LayoutContext>
   )
 }

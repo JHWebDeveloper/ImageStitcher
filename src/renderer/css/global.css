@@ -1,7 +1,8 @@
-@layer font, framework, reset, base;
+@layer font, framework, reset, base, slider;
 
 @import "font.css" layer(font);
 @import "toastr.css" layer(framework);
 @import "material_symbols_rounded.css" layer(framework);
 @import "reset.css" layer(reset);
 @import "base.css" layer(base);
+@import "slider.css" layer(slider)

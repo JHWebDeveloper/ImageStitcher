@@ -2,7 +2,7 @@ import React, { use, useEffect, useRef, useState } from 'react'
 
 import { DEFAULT_VALUE, LABEL } from '../../constants'
 import { useToggle, useThrottle } from '../../hooks'
-import { round } from '../../utilities'
+import { clamp, round } from '../../utilities'
 
 import { ElectronAPI } from '../../context/ElectronAPIContext'
 
@@ -67,7 +67,7 @@ export default function StitchAdjustControls({ isVertical }: Props) {
 			
 			return [
 				nextLeftValue,
-				Math.min((capturedR ?? prevRightValue) - nextLeftValue + (capturedL ?? prevLeftValue), SLIDER_MAX)
+				clamp((capturedR ?? prevRightValue) - nextLeftValue + (capturedL ?? prevLeftValue), MAX, SLIDER_MAX)
 			]
 		})
 	}
@@ -84,7 +84,7 @@ export default function StitchAdjustControls({ isVertical }: Props) {
 			captureLRValues(prevLeftValue, prevRightValue)
 
 			return [
-				Math.max((capturedL ?? prevLeftValue) - nextRightValue + (capturedR ?? prevRightValue), MIN),
+				clamp((capturedL ?? prevLeftValue) - nextRightValue + (capturedR ?? prevRightValue), MIN, MAX),
 				nextRightValue
 			]
 		})

@@ -27,6 +27,8 @@ export const LABEL = {
   LEFT: 'Left',
   LINK_CROP_SLIDERS: 'Link Crop Sliders',
   LOAD_RESULT: 'Load Result',
+  MOVE_TO_LEFT: 'Move to Left',
+  MOVE_TO_RIGHT: 'Move to Right',
   NEW_FILE: 'New File',
   ORIGINAL: 'Original',
   PNG: 'PNG',

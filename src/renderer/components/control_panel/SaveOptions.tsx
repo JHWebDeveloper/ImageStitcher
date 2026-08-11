@@ -22,9 +22,9 @@ export default function SaveOptions() {
   const isNewFile = saveType === SAVE_TYPE.NEW_FILE
 
   const saveTypeLabels = {
-    [SAVE_TYPE.REPLACE_A]: `${LABEL.REPLACE_ORIGINAL} ${labelA}`,
-    [SAVE_TYPE.REPLACE_B]: `${LABEL.REPLACE_ORIGINAL} ${labelB}`,
-    [SAVE_TYPE.NEW_FILE]: LABEL.NEW_FILE
+    [SAVE_TYPE.REPLACE_A]: `${LABEL.REPLACE_ORIGINAL} ${labelA} ${LABEL.IMAGE}`,
+    [SAVE_TYPE.REPLACE_B]: `${LABEL.REPLACE_ORIGINAL} ${labelB} ${LABEL.IMAGE}`,
+    [SAVE_TYPE.NEW_FILE]: LABEL.SAVE_NEW_IMAGE
   }
 
   const saveTypeValues = {

@@ -276,7 +276,7 @@ fieldset {
 	display: grid;
 	gap: 5px;
 
-	&:has(input:is([type="checkbox"], [type="radioset"])) {
+	&:has(input:is([type="checkbox"], [type="radio"])) {
 		grid-template-columns: min-content auto;
 
 		& > label {
@@ -297,6 +297,9 @@ fieldset {
 }
 
 .save-buttons {
-  display: inherit;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+
+	& > button {
+		flex: 1
+	}
 }

@@ -56,5 +56,5 @@ export const LABEL = {
   WEBP: 'WEBP'
 } as const
 
-export const LABEL_LR_VALUES = [ LABEL.LEFT, LABEL.RIGHT ] as const
-export const LABEL_TB_VALUES = [ LABEL.TOP, LABEL.BOTTOM ] as const
+export const LABEL_LR_VALUES = { labelA: LABEL.LEFT, labelB: LABEL.RIGHT } as const
+export const LABEL_TB_VALUES = { labelA: LABEL.TOP, labelB: LABEL.BOTTOM } as const

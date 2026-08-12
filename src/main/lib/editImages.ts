@@ -1,6 +1,6 @@
 import sharp, { FormatEnum, type Metadata, type Region, type Sharp } from 'sharp'
 
-import { ALIGNMENT_TYPE, DEFAULT_VALUE, FIT_TYPE, LOSSLESS_IMAGE_FORMAT, PREVIEW_IMAGE_FORMAT, SIDE } from '../constants'
+import { ALIGNMENT_TYPE, DEFAULT_VALUE, ERROR_MSG, FIT_TYPE, LOSSLESS_IMAGE_FORMAT, PREVIEW_IMAGE_FORMAT, SIDE } from '../constants'
 import type { AlignmentTypeValue, FitTypeValue, StitchOptions, StitchResultRaw } from '../types'
 import { formatBase64String, xor } from '../utilities'
 
@@ -57,7 +57,7 @@ export async function prepareImage(
   image: ImageUploadData,
   isPreview: boolean
 ) {
-  if (!image.srcPath) throw new Error('Source file not found.')
+  if (!image.srcPath) throw new Error(ERROR_MSG.MISSING_SOURCE_FILE)
 
   let preparedImage = sharp(image.srcPath)
 
@@ -195,7 +195,7 @@ export async function renderSingleImage(
     maxHeight
   }: StitchOptions
 ): Promise<StitchResultRaw> {
-  if (!image.srcPath) throw new Error('Source file not found.')
+  if (!image.srcPath) throw new Error(ERROR_MSG.MISSING_SOURCE_FILE)
 
   let preparedImage = await image.prepare(isPreview)
 

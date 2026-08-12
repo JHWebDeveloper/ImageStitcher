@@ -1,6 +1,7 @@
 import React, { type MouseEvent } from 'react'
 
 interface Props {
+  name?: string
   icon: string
   iconAngle?: number
   title?: string
@@ -9,15 +10,17 @@ interface Props {
 }
 
 export default function IconButton({
+  name,
   icon,
   iconAngle = 0,
   title,
   onClick,
   disabled = false
-}: Props) {          
+}: Props) {       
   return (
     <button
       type="button"
+      name={name}
       title={title}
       onClick={onClick}
       disabled={disabled}>

@@ -1,5 +1,3 @@
-import { NAMESPACE } from '../constants'
-
 export * from '../../shared/utilities'
 
 export function clamp(val: number, min: number = -Infinity, max: number = Infinity) {

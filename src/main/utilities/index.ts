@@ -51,8 +51,10 @@ export function isError(err: unknown): err is Error {
 	return Error.isError(err)
 }
 
-export const formatBase64String = (base64: string, format: keyof FormatEnum) => (
-	`data:image/${format};base64,${base64}`
-)
+export function formatBase64String(base64: string, format: keyof FormatEnum) {
+	return `data:image/${format};base64,${base64}`
+}
 
-export const xor = (a: boolean, b: boolean) => !!(Number(a) ^ Number(b))
+export function xor(a: boolean, b: boolean) {
+	return !!(Number(a) ^ Number(b))
+}

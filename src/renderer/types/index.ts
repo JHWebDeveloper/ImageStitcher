@@ -1,4 +1,4 @@
-import type { DragEvent, MouseEvent } from 'react'
+import type { Dispatch, DragEvent, MouseEvent, SetStateAction } from 'react'
 
 export * from '../../shared/types'
 
@@ -20,4 +20,12 @@ export type StartDrag = (e: MouseEvent<HTMLSpanElement>, clickPos?: number, thum
 
 export interface StartDragRef {
   startDrag: StartDrag
+}
+
+export interface ChoiceInputProps<T> {
+	label?: string
+	value?: T
+	onChange: Dispatch<SetStateAction<T | undefined | null>> | Function
+	optionLabels: Record<PropertyKey, string>
+	optionValues: Record<PropertyKey, T>
 }

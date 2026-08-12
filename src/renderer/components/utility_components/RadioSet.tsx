@@ -1,13 +1,10 @@
 import React, { type Dispatch, type PropsWithChildren, type SetStateAction, useId } from 'react'
+
+import type { ChoiceInputProps } from '../../types'
 import { assertsIsKeyInObject } from '../../utilities'
 
-interface Props<T> extends PropsWithChildren {
+interface Props<T> extends ChoiceInputProps<T>, PropsWithChildren {
   name: string
-  label?: string
-  value?: T
-  onChange: Dispatch<SetStateAction<T | undefined | null>> | Function
-  optionLabels: Record<PropertyKey, string>
-  optionValues: Record<PropertyKey, T>
 }
 
 export default function RadioSet<T>({

@@ -1,18 +1,11 @@
 import React, { type ChangeEvent, type Dispatch, type PropsWithChildren, type SetStateAction, useEffect, useId } from 'react'
 
+import type { ChoiceInputProps } from '../../types'
 import { assertsIsKeyInObject, assertsIsStringInUnion } from '../../utilities'
 
-interface LabelProps extends PropsWithChildren {
-  label: string | undefined
-}
+interface LabelProps extends Pick<ChoiceInputProps<null>, 'label'>, PropsWithChildren {}
 
-interface SelectProps<T> {
-  label?: string
-  value?: T
-  onChange: Dispatch<SetStateAction<T | undefined | null>> | Function
-  optionLabels: Record<PropertyKey, string>
-  optionValues: Record<PropertyKey, T>
-}
+interface SelectProps<T> extends ChoiceInputProps<T> {}
 
 function Label({ label, children }: LabelProps) {
   return label ? (

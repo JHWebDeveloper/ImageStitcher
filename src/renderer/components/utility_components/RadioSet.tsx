@@ -6,8 +6,8 @@ interface Props<T> extends PropsWithChildren {
   label?: string
   value?: T
   onChange: Dispatch<SetStateAction<T | undefined | null>> | Function
-  optionLabels: Record<string, string>
-  optionValues: Record<string, T>
+  optionLabels: Record<PropertyKey, string>
+  optionValues: Record<PropertyKey, T>
 }
 
 export default function RadioSet<T>({

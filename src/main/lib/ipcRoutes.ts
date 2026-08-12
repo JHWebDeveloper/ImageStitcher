@@ -1,6 +1,6 @@
 import { ipcMain, type IpcMainEvent, type IpcMainInvokeEvent } from 'electron'
 
-import { CHANNEL } from '../constants'
+import { CHANNEL, ERROR_MSG } from '../constants'
 import type { IpcChannel, PossiblePromise, SafeResponse } from '../types'
 
 import type { ImageStitchData } from './uploadImages'
@@ -27,20 +27,9 @@ function send<K extends keyof IpcChannel>(
   evt.sender.send(channel, payload)
 }
 
-function sendErrorMessage(evt: IpcMainEvent | IpcMainInvokeEvent, err: unknown) {
-  let _err: Error
-  
-  if (Error.isError(err)) {
-    _err = err
-  } else if (typeof err === 'string') {
-    _err = new Error(err)
-  } else {
-    _err = new Error('An unknown error occurred', { cause: err })
-  }
-
-  console.error(_err)
-
-  send(evt, CHANNEL.DISPLAY_ERROR_MESSAGE, _err)
+function sendErrorMessage(evt: IpcMainEvent | IpcMainInvokeEvent, message: string, cause: unknown) {
+  console.error(cause)
+  send(evt, CHANNEL.DISPLAY_ERROR_MESSAGE, new Error(message, { cause }))
 }
 
 export function setIpcRoutes(imageStitcher: ImageStitchData) {  
@@ -50,10 +39,30 @@ export function setIpcRoutes(imageStitcher: ImageStitchData) {
         result: await imageStitcher.getPreviewState(),
         timestamp: Date.now()
       })
-    } catch (cause) {
-      throw new Error('An error ocurred while attempting to merge images', { cause })
+    } catch (err) {
+      return sendErrorMessage(evt, ERROR_MSG.DISPLAY_STITCH_RESULT, err)
     }
   }
+
+  setHandler(CHANNEL.UPLOAD_IMAGE, async (evt, opts) => {
+    try {
+      await imageStitcher.uploadImage(opts, evt.sender)
+    } catch (err) {
+      return sendErrorMessage(evt, ERROR_MSG.UPLOAD_IMAGE, err)
+    }
+    
+    await sendStitchResult(evt)
+  })
+
+  setHandler(CHANNEL.UPLOAD_IMAGES, async (evt, opts) => {
+    try {
+      await imageStitcher.uploadImages(opts.imagePaths, evt.sender)
+    } catch (err) {
+      return sendErrorMessage(evt, ERROR_MSG.UPLOAD_IMAGES, err)
+    }
+
+    await sendStitchResult(evt)
+  })
 
   setListener(CHANNEL.SET_PREVIEW_BOUNDS, async (evt, { width, height }) => {
     imageStitcher.previewMaxWidth = width
@@ -61,145 +70,87 @@ export function setIpcRoutes(imageStitcher: ImageStitchData) {
 
     if (!imageStitcher.A.isLoaded) return
     
-    try {
-      await sendStitchResult(evt)
-    } catch (err) {
-      sendErrorMessage(evt, err)
-    }
-  })
-
-  setHandler(CHANNEL.UPLOAD_IMAGE, async (evt, opts) => {
-    try {
-      await imageStitcher.uploadImage(opts, evt.sender)
-      await sendStitchResult(evt)
-    } catch (err) {
-      sendErrorMessage(evt, err)
-    }
-  })
-
-  setHandler(CHANNEL.UPLOAD_IMAGES, async (evt, opts) => {
-    try {
-      await imageStitcher.uploadImages(opts.imagePaths, evt.sender)
-      await sendStitchResult(evt)
-    } catch (err) {
-      sendErrorMessage(evt, err)
-    }
+    sendStitchResult(evt)
   })
 
   setListener(CHANNEL.SWAP_IMAGES, async evt => {
     try {
       await imageStitcher.swap()
-      await sendStitchResult(evt)
     } catch (err) {
-      sendErrorMessage(evt, err)
+      return sendErrorMessage(evt, ERROR_MSG.SWAP_IMAGES, err)
     }
+
+    sendStitchResult(evt)
   })
 
   setListener(CHANNEL.CLEAR_IMAGE, async (evt, opts) => {
     try {
       await imageStitcher.removeImage(opts)
-      await sendStitchResult(evt)
     } catch (err) {
-      sendErrorMessage(evt, err)
+      return sendErrorMessage(evt, ERROR_MSG.CLEAR_IMAGE, err)
     }
+
+    sendStitchResult(evt)
   })
 
   setListener(CHANNEL.CLEAR_BOTH_IMAGES, async evt => {		
     try {
       await imageStitcher.removeBothImages()
-      await sendStitchResult(evt)
     } catch (err) {
-      sendErrorMessage(evt, err)
+      return sendErrorMessage(evt, ERROR_MSG.CLEAR_BOTH_IMAGES, err)
     }
+
+    sendStitchResult(evt)
   })
 
   setListener(CHANNEL.TOGGLE_ORIENTATION, async (evt, opts) => {		
     try {
       await imageStitcher.toggleOrientation(opts)
-      await sendStitchResult(evt)
     } catch (err) {
-      sendErrorMessage(evt, err)
+      return sendErrorMessage(evt, ERROR_MSG.TOGGLE_ORIENTATION, err)
     }
+
+    sendStitchResult(evt)
   })
 
   setListener(CHANNEL.ROTATE_IMAGE, async (evt, opts) => {
     imageStitcher.rotateImage(opts)
-
-    try {
-      await sendStitchResult(evt)
-    } catch (err) {
-      sendErrorMessage(evt, err)
-    }
+    sendStitchResult(evt)
   })
 
   setListener(CHANNEL.TOGGLE_FLIP, async (evt, opts) => {
     imageStitcher.flipImage(opts)
-
-    try {
-      await sendStitchResult(evt)
-    } catch (err) {
-      sendErrorMessage(evt, err)
-    }
+    sendStitchResult(evt)
   })
 
   setListener(CHANNEL.TOGGLE_FLOP, async (evt, opts) => {
     imageStitcher.flopImage(opts)
-
-    try {
-      await sendStitchResult(evt)
-    } catch (err) {
-      sendErrorMessage(evt, err)
-    }
+    sendStitchResult(evt)
   })
 
   setListener(CHANNEL.SET_FIT_TYPE, async (evt, { fitType }) => {
-    if (imageStitcher) imageStitcher.fitType = fitType
-
-    try {
-      await sendStitchResult(evt)
-    } catch (err) {
-      sendErrorMessage(evt, err)
-    }
+    imageStitcher.fitType = fitType
+    sendStitchResult(evt)
   })
 
   setListener(CHANNEL.SET_ALIGNMENT_TYPE, async (evt, { alignmentType }) => {
-    if (imageStitcher) imageStitcher.alignmentType = alignmentType
-
-    try {
-      await sendStitchResult(evt)
-    } catch (err) {
-      sendErrorMessage(evt, err)
-    }
+    imageStitcher.alignmentType = alignmentType
+    sendStitchResult(evt)
   })
 
   setListener(CHANNEL.SET_BACKGROUND_COLOR, async (evt, { backgroundColor }) => {
-    if (imageStitcher) imageStitcher.backgroundColor = backgroundColor
-
-    try {
-      await sendStitchResult(evt)
-    } catch (err) {
-      sendErrorMessage(evt, err)
-    }
+    imageStitcher.backgroundColor = backgroundColor
+    sendStitchResult(evt)
   })
 
   setListener(CHANNEL.SET_BACKGROUND_OPACITY, async (evt, { backgroundOpacity }) => {
-    if (imageStitcher) imageStitcher.backgroundOpacity = backgroundOpacity
-
-    try {
-      await sendStitchResult(evt)
-    } catch (err) {
-      sendErrorMessage(evt, err)
-    }
+    imageStitcher.backgroundOpacity = backgroundOpacity
+    sendStitchResult(evt)
   })
 
   setListener(CHANNEL.ADJUST_STITCH, async (evt, opts) => {
     imageStitcher.adjustStitch(opts)
-
-    try {
-      await sendStitchResult(evt)
-    } catch (err) {
-      sendErrorMessage(evt, err)
-    }
+    sendStitchResult(evt)
   })
 
   setHandler(CHANNEL.IS_MERGE_RESULT_READY, () => (
@@ -209,18 +160,20 @@ export function setIpcRoutes(imageStitcher: ImageStitchData) {
   setListener(CHANNEL.FLATTEN_IMAGE, async (evt, { format }) => {
     try {
       await imageStitcher.flatten(format)
-      await sendStitchResult(evt)
     } catch (err) {
-      sendErrorMessage(evt, err)
+      return sendErrorMessage(evt, ERROR_MSG.FLATTEN_IMAGE, err)
     }
+
+    sendStitchResult(evt)
   })
 
   setListener(CHANNEL.SAVE_IMAGE, async (evt, data) => {
     try {
       await imageStitcher.save(evt.sender, data)
-      await sendStitchResult(evt)
     } catch (err) {
-      sendErrorMessage(evt, err)
+      return sendErrorMessage(evt, ERROR_MSG.SAVE_IMAGES, err)
     }
+
+    sendStitchResult(evt)
   })
 }

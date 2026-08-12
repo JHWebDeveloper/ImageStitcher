@@ -3,7 +3,7 @@ import path from 'node:path'
 import { app, BrowserWindow, dialog, type OpenDialogOptions, type SaveDialogReturnValue, type WebContents } from 'electron'
 import type { FormatEnum } from 'sharp'
 
-import { DEFAULT_VALUE, IMAGE_FILTER, SAVE_TYPE, UPLOADS_PATH } from '../constants'
+import { DEFAULT_VALUE, ERROR_MSG, IMAGE_FILTER, SAVE_TYPE, UPLOADS_PATH } from '../constants'
 import type { SaveOptions } from '../types'
 
 import type { ImageStitchData, ImageUploadData } from './uploadImages'
@@ -118,7 +118,7 @@ async function saveImageWithDialog({
   imageStitchData,
   webContents
 }: SaveImageWithDialogOpts) {
-  if (!webContents) throw new Error('No browser window provided')
+  if (!webContents) throw new Error(ERROR_MSG.MISSING_BROWSER_WINDOW)
 
   const browserWindow = BrowserWindow.fromWebContents(webContents)
 
@@ -156,7 +156,7 @@ export async function saveImage(
 ) {
   const { result } = await imageStitchData.result({ format })
   
-  if (!result || (typeof result === 'string')) throw new Error('No image data to save')
+  if (!result || (typeof result === 'string')) throw new Error(ERROR_MSG.NO_IMAGE_DATA)
 
   const isReplaceA = saveType === SAVE_TYPE.REPLACE_A
   const isReplaceB = saveType === SAVE_TYPE.REPLACE_B

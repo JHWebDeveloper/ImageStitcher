@@ -38,7 +38,7 @@ export const ALIGNMENT_TYPE = {
   END: 'END',
 } as const
 
-export const FORMAT: Record<string, keyof FormatEnum> = {
+export const FORMAT: Record<PropertyKey, keyof FormatEnum> = {
   JPEG: 'jpeg',
   PNG: 'png',
   TIFF: 'tiff',

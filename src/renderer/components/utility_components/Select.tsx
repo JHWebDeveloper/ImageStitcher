@@ -10,8 +10,8 @@ interface SelectProps<T> {
   label?: string
   value?: T
   onChange: Dispatch<SetStateAction<T | undefined | null>> | Function
-  optionLabels: Record<string, string>
-  optionValues: Record<string, T>
+  optionLabels: Record<PropertyKey, string>
+  optionValues: Record<PropertyKey, T>
 }
 
 function Label({ label, children }: LabelProps) {

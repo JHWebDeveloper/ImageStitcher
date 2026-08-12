@@ -3,7 +3,7 @@ import path from 'node:path'
 import type { WebContents } from 'electron'
 import type { FormatEnum } from 'sharp'
 
-import { DEFAULT_VALUE, FIT_TYPE, FORMAT, POST_SAVE_ACTION, PREVIEW_IMAGE_FORMAT, SIDE, UPLOADS_PATH } from '../constants'
+import { DEFAULT_VALUE, ERROR_MSG, FIT_TYPE, FORMAT, POST_SAVE_ACTION, PREVIEW_IMAGE_FORMAT, SIDE, UPLOADS_PATH } from '../constants'
 import type { AdjustStitchOpts, AlignmentTypeValue, FitTypeValue, RotateOptions, SaveOptions, SideOption, StitchOptions, StitchResult, StitchResultRaw, Side, UploadImageOptions } from '../types'
 import { arrayIsNullOrEmpty, doesFileExist, hexToRgb, swapPropertiesMutative, xor } from '../utilities'
 
@@ -93,7 +93,7 @@ export class ImageUploadData {
       this.originalPath = null
     }
 
-    this.srcPath = srcPath /* only update srcPath once image is successfully copied */
+    this.srcPath = srcPath // only update srcPath once image is successfully copied
   }
 
   async removeImage() {
@@ -205,7 +205,7 @@ export class ImageStitchData implements Record<Side, ImageUploadData> {
 
       pathOrBuffer = filePaths[0]
     } else if (!pathOrBuffer) {
-      throw new Error('An argument for parameter webContents is required when no image path or buffer is provided.')
+      throw new Error(ERROR_MSG.WEB_CONTENTS_REQUIRED)
     }
 
     if (!shouldReplace && side === SIDE.A && this.A.isLoaded && !this.B.isLoaded) {

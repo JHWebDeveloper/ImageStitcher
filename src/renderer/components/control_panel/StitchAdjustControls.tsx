@@ -25,7 +25,7 @@ const useCaptureLRValues = (): [
 	() => void
 ] => {
 	const capturedL = useRef<number>(null)
-	const capturedR  = useRef<number>(null)
+	const capturedR = useRef<number>(null)
 
 	const setCapturedLR = (left: number, right: number) => {
 		capturedL.current ??= left
@@ -37,7 +37,7 @@ const useCaptureLRValues = (): [
 		capturedR.current = null
 	}
 
-	return [ 
+	return [
 		capturedL.current,
 		capturedR.current,
 		setCapturedLR,
@@ -55,7 +55,7 @@ export default function StitchAdjustControls({ isVertical }: Props) {
 	const cropImageBValueForInput = round(cropImageBValue - 100)
 
 	const setLeft = (nextLeftValue: number) => {
-		setCropValues( ([, prevRightValue ]) => ([
+		setCropValues(([, prevRightValue ]) => ([
 			nextLeftValue,
 			prevRightValue
 		]))
@@ -64,7 +64,7 @@ export default function StitchAdjustControls({ isVertical }: Props) {
 	const setLeftComplimentRight = (nextLeftValue: number) => {
 		setCropValues(([ prevLeftValue, prevRightValue ]) => {
 			captureLRValues(prevLeftValue, prevRightValue)
-			
+
 			return [
 				nextLeftValue,
 				clamp((capturedR ?? prevRightValue) - nextLeftValue + (capturedL ?? prevLeftValue), MAX, SLIDER_MAX)

@@ -1,6 +1,6 @@
 export * from '../../shared/utilities'
 
-export function clamp(val: number, min: number = -Infinity, max: number = Infinity) {
+export function clamp(val: number, min = -Infinity, max = Infinity) {
 	if (max < min) {
 		throw new RangeError(`Minimum value cannot exceed the maximum value. Received minimum ${min} and maximum ${max}.`)
 	}
@@ -8,7 +8,7 @@ export function clamp(val: number, min: number = -Infinity, max: number = Infini
 	return Math.max(min, Math.min(max, val))
 }
 
-export function round(value: number, decimals: number = 2) {
+export function round(value: number, decimals = 2) {
 	const multiplier = 10 ** decimals
 
 	return Math.round(value * multiplier) / multiplier
@@ -24,7 +24,7 @@ export function convertStringToNumber(value: string | number) {
 
 function createTypeError(value: unknown, type: string) {
 	return new TypeError(`${value} is not of type ${type}. Received type ${typeof value}.`)
-} 
+}
 
 export function assertsIsDOMRect(rect: unknown): asserts rect is typeof DOMRect {
 	if (!(rect instanceof DOMRect)) throw createTypeError(rect, 'DOMRect')
@@ -55,7 +55,7 @@ export function assertsIsNumber(value: unknown): asserts value is number {
 
 export function assertsIsStringInUnion<T extends string>(
 	value: unknown,
-	valuesInUnion: T[] | Readonly<T[]>
+	valuesInUnion: T[] | readonly T[]
 ): asserts value is T {
 	if (typeof value !== 'string') throw createTypeError(value, 'string')
 

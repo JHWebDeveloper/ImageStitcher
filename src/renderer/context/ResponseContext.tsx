@@ -40,7 +40,7 @@ export function ResponseContextProvider({ children }: Props) {
 			removeDisplayStitchResponseListener()
 		}
 	}, [])
-	
+
 	return (
 		<ResponseContext value={stitchResult}>
 			{ children }

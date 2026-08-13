@@ -13,7 +13,7 @@ import IconButton from '../utility_components/IconButton'
 
 export default function ControlPanelTopRow() {
 	const { clearImage, uploadImage, uploadImages } = use(ElectronAPI)
-	const { isImageBLoaded, isVertical, ...responseCtx }  = use(ResponseContext)
+	const { isImageBLoaded, isVertical, ...responseCtx } = use(ResponseContext)
 	const { labelA, labelB } = use(LayoutContext)
 
 	return (

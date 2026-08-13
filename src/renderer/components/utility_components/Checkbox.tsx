@@ -1,8 +1,8 @@
 import React from 'react'
 
 interface Props {
-	label: string,
-	checked: boolean,
+	label: string
+	checked: boolean
 	onChange: (value?: boolean) => void
 }
 
@@ -18,7 +18,7 @@ export default function Checkbox({
 				checked={checked}
 				onChange={e => {
 					onChange(e.target.checked)
-				}}  />
+				}} />
 			<span>{ label }</span>
 		</label>
 	)

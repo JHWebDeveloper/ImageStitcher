@@ -1,10 +1,10 @@
-import { useState } from "react"
+import { useState } from 'react'
 
 import { convertStringToNumber, round } from '../utilities'
 
 type NumberStringPair = [number, string]
 
-function convertToNumberStringPair(value: number | string, prevNumberValue: number = 0): NumberStringPair {
+function convertToNumberStringPair(value: number | string, prevNumberValue = 0): NumberStringPair {
 	if (typeof value === 'string' && value.match(/^-?0(\.0*)?$/)) return [0, value]
 
 	let numberValue = convertStringToNumber(value)

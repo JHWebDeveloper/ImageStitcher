@@ -14,7 +14,7 @@ function setListener<K extends keyof IpcChannel>(
 
 function setHandler<K extends keyof IpcChannel>(
 	channel: K,
-	callback: (evt: IpcMainInvokeEvent, opts: IpcChannel[K]['payload']) => PossiblePromise<SafeResponse<IpcChannel[K], 'response'>>
+	callback: (evt: IpcMainInvokeEvent, opts: IpcChannel[K]['payload']) => PossiblePromise<SafeResponse<IpcChannel[K], 'response'> | void>
 ) {
 	ipcMain.handle(channel, callback)
 }
@@ -32,7 +32,7 @@ function sendErrorMessage(evt: IpcMainEvent | IpcMainInvokeEvent, message: strin
 	send(evt, CHANNEL.DISPLAY_ERROR_MESSAGE, new Error(message, { cause }))
 }
 
-export function setIpcRoutes(imageStitcher: ImageStitchData) {  
+export function setIpcRoutes(imageStitcher: ImageStitchData) {
 	async function sendStitchResult(evt: IpcMainEvent | IpcMainInvokeEvent) {
 		try {
 			send(evt, CHANNEL.DISPLAY_STITCH_RESULT, {
@@ -50,7 +50,7 @@ export function setIpcRoutes(imageStitcher: ImageStitchData) {
 		} catch (err) {
 			return sendErrorMessage(evt, ERROR_MSG.UPLOAD_IMAGE, err)
 		}
-		
+
 		await sendStitchResult(evt)
 	})
 
@@ -69,7 +69,7 @@ export function setIpcRoutes(imageStitcher: ImageStitchData) {
 		imageStitcher.previewMaxHeight = height
 
 		if (!imageStitcher.A.isLoaded) return
-		
+
 		sendStitchResult(evt)
 	})
 
@@ -93,7 +93,7 @@ export function setIpcRoutes(imageStitcher: ImageStitchData) {
 		sendStitchResult(evt)
 	})
 
-	setListener(CHANNEL.CLEAR_BOTH_IMAGES, async evt => {		
+	setListener(CHANNEL.CLEAR_BOTH_IMAGES, async evt => {
 		try {
 			await imageStitcher.removeBothImages()
 		} catch (err) {
@@ -103,7 +103,7 @@ export function setIpcRoutes(imageStitcher: ImageStitchData) {
 		sendStitchResult(evt)
 	})
 
-	setListener(CHANNEL.TOGGLE_ORIENTATION, async (evt, opts) => {		
+	setListener(CHANNEL.TOGGLE_ORIENTATION, async (evt, opts) => {
 		try {
 			await imageStitcher.toggleOrientation(opts)
 		} catch (err) {

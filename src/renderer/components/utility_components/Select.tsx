@@ -1,4 +1,4 @@
-import React, { type ChangeEvent, type Dispatch, type PropsWithChildren, type SetStateAction, useEffect, useId } from 'react'
+import React, { type ChangeEvent, type PropsWithChildren, useEffect, useId } from 'react'
 
 import type { ChoiceInputProps } from '../../types'
 import { assertsIsKeyInObject, assertsIsStringInUnion } from '../../utilities'
@@ -14,6 +14,10 @@ function Label({ label, children }: LabelProps) {
 			{ children }
 		</label>
 	) : children
+}
+
+function isDefined<T>(value: T | null | undefined): value is T {
+	return !!value
 }
 
 export default function Select<const T extends string>({
@@ -33,9 +37,13 @@ export default function Select<const T extends string>({
 	}
 
 	useEffect(() => {
-		if (!isValidSelection) onChange(listOfValues.at(-1))
+		if (isValidSelection) return
+
+		const fallback = listOfValues.at(-1)
+
+		if (isDefined(fallback)) onChange(fallback)
 	}, [isValidSelection])
-	
+
 	return isValidSelection ? (
 		<Label label={label}>
 			<select

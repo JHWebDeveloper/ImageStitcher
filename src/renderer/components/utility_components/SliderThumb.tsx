@@ -23,7 +23,7 @@ type GetClickPos = (e: MouseEventSpan, thumb?: HTMLElement | null) => number
 
 function assertsIsHTMLSpanElement(el: unknown): asserts el is typeof HTMLSpanElement {
 	if (el instanceof HTMLSpanElement) return
-	
+
 	throw new Error('Slider thumb element not captured')
 }
 
@@ -68,7 +68,7 @@ export default function SliderThumb({
 	trackRef
 }: Props) {
 	sliderMin = sliderMin ?? min
-	
+
 	const thumbPos = useRef(0)
 	const mousePos = useRef(0)
 
@@ -88,7 +88,7 @@ export default function SliderThumb({
 
 		if (nextMousePos === prevMousePos) return
 
-		let nextThumbPos = prevMousePos
+		let nextThumbPos
 
 		if (e.shiftKey && nextMousePos < prevMousePos) {
 			nextThumbPos = thumbPos.current - microStep
@@ -99,7 +99,7 @@ export default function SliderThumb({
 		}
 
 		if (nextThumbPos === thumbPos.current) return
-		
+
 		onChange(clamp(nextThumbPos, min, max))
 	})
 
@@ -111,14 +111,14 @@ export default function SliderThumb({
 		clickPos ??= getClickPos(e, thumb)
 
 		thumb?.focus()
-	
+
 		const controller = new AbortController()
 		const { signal } = controller
 
 		const onMouseUp = () => {
 			controller.abort()
 		}
-	
+
 		window.addEventListener('mousemove', e => {
 			drag(e, clickPos, track)
 		}, { signal })
@@ -152,12 +152,13 @@ export default function SliderThumb({
 			title={title}
 			onMouseDown={e => startDrag(e)}
 			onKeyDown={keyIncrement}
-			{...!!onDoubleClick ? { onDoubleClick } : {}}
+			{...onDoubleClick ? { onDoubleClick } : {}}
 			style={{
 				left: `${clamp((value - sliderMin) / range * 100, 0, 100)}%`,
 				...width ? { width: `${width}%` } : {}
 			}}
 			tabIndex={0}
-			role="slider"></span>
+			role="slider">
+		</span>
 	)
 }

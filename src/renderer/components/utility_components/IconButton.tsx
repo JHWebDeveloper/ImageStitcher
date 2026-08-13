@@ -5,7 +5,7 @@ interface Props {
 	icon: string
 	iconAngle?: number
 	title?: string
-	onClick: (e: MouseEvent<HTMLButtonElement>) => void,
+	onClick: (e: MouseEvent<HTMLButtonElement>) => void
 	disabled?: boolean
 }
 
@@ -16,7 +16,7 @@ export default function IconButton({
 	title,
 	onClick,
 	disabled = false
-}: Props) {       
+}: Props) {
 	return (
 		<button
 			type="button"
@@ -28,7 +28,9 @@ export default function IconButton({
 				className="material-symbols-rounded"
 				style={{
 					rotate: `${iconAngle}deg`
-				}}>{ icon }</span>
+				}}>
+				{ icon }
+			</span>
 		</button>
 	)
 }

@@ -1,6 +1,7 @@
 import React, { use } from 'react'
 
 import { FORMAT, LABEL, POST_SAVE_ACTION, SAVE_TYPE } from '../../constants'
+import { SaveTypeValue } from '../../types'
 
 import { ElectronAPI } from '../../context/ElectronAPIContext'
 import { LayoutContext } from '../../context/LayoutContext'
@@ -17,7 +18,7 @@ export default function SaveOptions() {
 	const { flattenImage, saveImage } = use(ElectronAPI)
 	const { labelA, labelB } = use(LayoutContext)
 	const { imageAHasOriginal, imageBHasOriginal, isImageALoaded, isImageBLoaded, isVertical } = use(ResponseContext)
-	const { getSaveOptions, format, saveType, ...saveCtx }= use(SaveContext)
+	const { getSaveOptions, format, saveType, ...saveCtx } = use(SaveContext)
 
 	const isNewFile = saveType === SAVE_TYPE.NEW_FILE
 
@@ -49,9 +50,9 @@ export default function SaveOptions() {
 				onChange={saveCtx.setFormat}
 				optionLabels={LABEL}
 				optionValues={FORMAT} />
-			<RadioSet
+			<RadioSet<SaveTypeValue>
 				name="save-type"
-				label={"Save Actions"}
+				label="Save Actions"
 				value={saveType}
 				onChange={saveCtx.setSaveType}
 				optionLabels={saveTypeLabels}

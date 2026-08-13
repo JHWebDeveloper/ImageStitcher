@@ -10,7 +10,7 @@ import NumberInput from '../utility_components/NumberInput'
 export default function BackgroundOpacityInput() {
 	const { setBackgroundOpacity } = use(ElectronAPI)
 	const [ bgOpacity, setBgOpacity ] = useStateCallback<number>(DEFAULT_VALUE.BACKGROUND_OPACITY, setBackgroundOpacity)
-	
+
 	return (
 		<NumberInput
 			value={bgOpacity}

@@ -2,14 +2,14 @@ import type { Dispatch, DragEvent, MouseEvent, SetStateAction } from 'react'
 
 export * from '../../shared/types'
 
-export type UseToggleDispatch = (newValue?: boolean) => void 
+export type UseToggleDispatch = (newValue?: boolean) => void
 
 export type DivDragEvent = DragEvent<HTMLDivElement>
 
 export interface SliderThumbProps {
-	value: number,
-	min?: number,
-	max?: number,
+	value: number
+	min?: number
+	max?: number
 	onChange: (value: number) => void
 	title?: string
 	width?: number
@@ -25,7 +25,7 @@ export interface StartDragRef {
 export interface ChoiceInputProps<T> {
 	label?: string
 	value?: T
-	onChange: Dispatch<SetStateAction<T | undefined | null>> | Function
+	onChange: Dispatch<SetStateAction<T>> | ((arg: T) => unknown)
 	optionLabels: Record<PropertyKey, string>
 	optionValues: Record<PropertyKey, T>
 }

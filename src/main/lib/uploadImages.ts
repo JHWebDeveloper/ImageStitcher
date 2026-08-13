@@ -198,7 +198,7 @@ export class ImageStitchData implements Record<Side, ImageUploadData> {
 		}: UploadImageOptions,
 		webContents?: WebContents
 	) {
-		if (!pathOrBuffer && webContents) {      
+		if (!pathOrBuffer && webContents) {
 			const { canceled, filePaths } = await selectImageDialog(webContents, 1)
 
 			if (canceled || arrayIsNullOrEmpty(filePaths)) return
@@ -233,7 +233,7 @@ export class ImageStitchData implements Record<Side, ImageUploadData> {
 
 	async removeImage({ side }: SideOption) {
 		const shouldShiftBToA = side === SIDE.A && !!this.B.srcPath
-			
+
 		if (shouldShiftBToA) await this.swap()
 
 		await this[shouldShiftBToA ? SIDE.B : side].removeImage()
@@ -247,7 +247,7 @@ export class ImageStitchData implements Record<Side, ImageUploadData> {
 
 	async swap() {
 		if (!this.A.srcPath || !this.B.srcPath) return
-		
+
 		const extA = path.extname(this.A.srcPath)
 		const tempFilename = path.join(UPLOADS_PATH, `${SIDE.A}_TEMP${extA}`)
 		const newSrcPathA = path.join(UPLOADS_PATH, `${SIDE.A}${path.extname(this.B.srcPath)}`)
@@ -324,7 +324,6 @@ export class ImageStitchData implements Record<Side, ImageUploadData> {
 			pathOrBuffer: result,
 			format
 		})
-
 	}
 
 	async save(webContents: WebContents, saveOpts: SaveOptions) {

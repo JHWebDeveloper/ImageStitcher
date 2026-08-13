@@ -18,7 +18,7 @@ function returnFitType(fitType: FitTypeValue) {
 	return sharp.fit.cover
 }
 
-function returnAlignmentType(alignmentType: AlignmentTypeValue, isVertical: boolean)  {
+function returnAlignmentType(alignmentType: AlignmentTypeValue, isVertical: boolean) {
 	if (isVertical && alignmentType === ALIGNMENT_TYPE.START) {
 		return 'left'
 	} else if (isVertical && alignmentType === ALIGNMENT_TYPE.END) {
@@ -50,7 +50,7 @@ export async function convertBufferToBase64(
 		buffer = imgPathOrBuffer
 	}
 
-	return formatBase64String(buffer.toString('base64'), format || await getFormatFromBuffer(format)) 
+	return formatBase64String(buffer.toString('base64'), format || await getFormatFromBuffer(format))
 }
 
 export async function prepareImage(
@@ -66,7 +66,7 @@ export async function prepareImage(
 	if (image.angle) preparedImage = preparedImage.rotate(image.angle)
 
 	preparedImage = preparedImage.toFormat(isPreview ? PREVIEW_IMAGE_FORMAT : LOSSLESS_IMAGE_FORMAT)
-	
+
 	return sharp(await preparedImage.toBuffer())
 }
 
@@ -95,7 +95,7 @@ function scaleImage(
 	const isALarger = metadataA[axis] > metadataB[axis]
 	let imgAResized: Sharp | undefined
 	let imgBResized: Sharp | undefined
-	
+
 	if (needsAlpha && !metadataA.hasAlpha && isALarger) {
 		imgB = imgB.toFormat(getAlphaFormat(isPreview))
 	} else if (needsAlpha && !metadataA.hasAlpha && !isALarger) {
@@ -304,7 +304,7 @@ export async function stitchImages(
 	} else {
 		result = result.toFormat(format)
 	}
-	
+
 	return {
 		result: await result.toBuffer(),
 		hasSizeDifference,

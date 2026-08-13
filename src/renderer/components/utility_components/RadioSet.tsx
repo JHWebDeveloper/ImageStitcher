@@ -1,4 +1,4 @@
-import React, { type Dispatch, type PropsWithChildren, type SetStateAction, useId } from 'react'
+import React, { type PropsWithChildren, useId } from 'react'
 
 import type { ChoiceInputProps } from '../../types'
 import { assertsIsKeyInObject } from '../../utilities'
@@ -30,8 +30,8 @@ export default function RadioSet<T>({
 							type="radio"
 							name={name}
 							checked={value === val}
-							onChange={() => onChange(val)}/>
-							{optionLabels[key]}
+							onChange={() => onChange(val)} />
+						{optionLabels[key]}
 					</label>
 				)
 			})}

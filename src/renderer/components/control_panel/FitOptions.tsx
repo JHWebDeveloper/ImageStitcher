@@ -1,4 +1,4 @@
-import React, { type PropsWithChildren, use } from 'react'
+import React, { use } from 'react'
 
 import { FIT_TYPE, LABEL } from '../../constants'
 import type { FitTypeValue } from '../../types'
@@ -12,9 +12,7 @@ import AlignmentOptions from './AlignmentOptions'
 import BackgroundColorOptions from './BackgroundColorOptions'
 import BackgroundOpacityOptions from './BackgroundOpacityOptions'
 
-interface Props extends PropsWithChildren {}
-
-export default function FitOptions({ children }: Props) {
+export default function FitOptions() {
 	const { fitType, isVertical } = use(ResponseContext)
 	const { setFitType } = use(ElectronAPI)
 	const isContain = fitType === FIT_TYPE.CONTAIN
@@ -25,7 +23,7 @@ export default function FitOptions({ children }: Props) {
 				label={LABEL.SIZING}
 				value={fitType}
 				onChange={setFitType}
-				optionLabels={LABEL} 
+				optionLabels={LABEL}
 				optionValues={FIT_TYPE} />
 			<ToggleComponent shouldShow={isContain || fitType === FIT_TYPE.COVER}>
 				<AlignmentOptions isVertical={isVertical} />

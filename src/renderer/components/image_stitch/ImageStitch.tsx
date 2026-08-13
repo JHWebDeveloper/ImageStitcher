@@ -78,7 +78,7 @@ export default function ImageStitch() {
 			</ToggleComponent>
 			<ImageDrop
 				side={SIDE.A}
-				label={`${isImageALoaded ? LABEL.REPLACE : LABEL.UPLOAD} ${isImageBLoaded ? labelA : LABEL.IMAGE}`} 
+				label={`${isImageALoaded ? LABEL.REPLACE : LABEL.UPLOAD} ${isImageBLoaded ? labelA : LABEL.IMAGE}`}
 				allowMultiple={!(isImageALoaded && isImageBLoaded)} />
 			<ToggleComponent shouldShow={isImageALoaded}>
 				<ImageDrop

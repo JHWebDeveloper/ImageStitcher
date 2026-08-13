@@ -35,7 +35,7 @@ export const FIT_TYPE = {
 export const ALIGNMENT_TYPE = {
 	START: 'START',
 	MIDDLE: 'MIDDLE',
-	END: 'END',
+	END: 'END'
 } as const
 
 export const FORMAT: Record<PropertyKey, keyof FormatEnum> = {

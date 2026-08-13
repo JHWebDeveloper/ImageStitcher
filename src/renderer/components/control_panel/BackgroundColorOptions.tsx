@@ -22,7 +22,7 @@ export default function BackgroundColorInput() {
 
 	return (
 		<input
-			type="color" 
+			type="color"
 			value={bgColor}
 			onChange={setBgColorFromEvent} />
 	)

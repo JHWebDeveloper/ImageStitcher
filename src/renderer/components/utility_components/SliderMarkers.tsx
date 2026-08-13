@@ -22,7 +22,8 @@ export default function SliderMarkers({
 						className="slider-marker"
 						style={{
 							left: `${(point - min) / range * 100}%`
-						}}></span>
+						}}>
+					</span>
 				))}
 			</span>
 		</span>

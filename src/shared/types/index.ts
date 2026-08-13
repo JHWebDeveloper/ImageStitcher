@@ -1,4 +1,3 @@
-import { type WebContents } from 'electron'
 import { type FormatEnum } from 'sharp'
 
 import {
@@ -8,7 +7,7 @@ import {
 	FORMAT,
 	POST_SAVE_ACTION,
 	SAVE_TYPE,
-	SIDE,
+	SIDE
 } from '../constants'
 
 export type AlignmentTypeValue = typeof ALIGNMENT_TYPE[keyof typeof ALIGNMENT_TYPE]
@@ -65,7 +64,7 @@ export interface StitchResponse {
 	result: StitchResult | undefined
 }
 
-export type AdjustStitchOpts = {
+export interface AdjustStitchOpts {
 	cropImageAValue: number
 	cropImageBValue: number
 }
@@ -75,7 +74,7 @@ export interface IpcChannel {
 		payload: AdjustStitchOpts
 	}
 	[CHANNEL.CLEAR_BOTH_IMAGES]: {
-		payload: {}
+		payload: never
 	}
 	[CHANNEL.CLEAR_IMAGE]: {
 		payload: SideOption
@@ -90,7 +89,7 @@ export interface IpcChannel {
 		payload: { format: keyof FormatEnum }
 	}
 	[CHANNEL.IS_MERGE_RESULT_READY]: {
-		payload: {},
+		payload: never
 		response: boolean
 	}
 	[CHANNEL.ROTATE_IMAGE]: {
@@ -118,7 +117,7 @@ export interface IpcChannel {
 		}
 	}
 	[CHANNEL.SWAP_IMAGES]: {
-		payload: {}
+		payload: never
 	}
 	[CHANNEL.TOGGLE_FLIP]: {
 		payload: SideOption
@@ -142,6 +141,4 @@ export interface IpcChannel {
 
 type SafeLookup<T, K extends PropertyKey> = K extends keyof T ? T[K] : undefined
 
-type ValueOrVoid<T> = T extends undefined ? void : T
-
-export type SafeResponse<T, K extends PropertyKey> = ValueOrVoid<SafeLookup<T, K>>
+export type SafeResponse<T, K extends PropertyKey> = SafeLookup<T, K>

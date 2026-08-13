@@ -82,7 +82,7 @@ export const electronAPI = {
 		send(CHANNEL.TOGGLE_ORIENTATION, { shouldSwap, shouldRotate })
 	},
 
-	rotateImage(side: Side, ccw: boolean = false) {
+	rotateImage(side: Side, ccw = false) {
 		send(CHANNEL.ROTATE_IMAGE, { side, ccw })
 	},
 

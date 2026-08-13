@@ -96,7 +96,7 @@ export async function deleteImageAfterSave({
 	if (!shouldDelete || !originalPath || originalPath === newFilePath) return
 
 	imageData.originalPath = null
-	
+
 	return fsp.unlink(originalPath)
 }
 
@@ -155,7 +155,7 @@ export async function saveImage(
 	}: SaveOptions
 ) {
 	const { result } = await imageStitchData.result({ format })
-	
+
 	if (!result || (typeof result === 'string')) throw new Error(ERROR_MSG.NO_IMAGE_DATA)
 
 	const isReplaceA = saveType === SAVE_TYPE.REPLACE_A
@@ -167,7 +167,7 @@ export async function saveImage(
 		fileData = await replaceImage({
 			originalFilePath: imageStitchData.A.originalPath,
 			format,
-			result, 
+			result,
 			shouldWarn
 		})
 	} else if (isReplaceB && imageStitchData.B.originalPath) {

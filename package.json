@@ -10,7 +10,8 @@
     "start:main": "cross-env NODE_ENV=development NODE_OPTIONS=\"--import tsx\" electronmon ./src/main/index.ts",
     "start:preload": "rimraf build/preload.js && cross-env NODE_ENV=development NODE_OPTIONS=\"--import tsx\" webpack --config ./webpack/webpack.config.preload.dev.ts",
     "dev": "cross-env NODE_ENV=development NODE_OPTIONS=\"--import tsx\" webpack serve --config ./webpack/webpack.config.renderer.dev.ts",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "lint": "npx eslint ."
   },
   "dependencies": {
     "electron-log": "^5.4.3",

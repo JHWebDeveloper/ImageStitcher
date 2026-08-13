@@ -127,19 +127,19 @@ export default function StitchAdjustControls({ isVertical }: Props) {
 		}
 	}, [])
 
-  return (
-    <div className="crop-control">
-		  <IconButton
-        icon={`link${isLinked ? '' : '_off'}`}
-        title={isLinked ? LABEL.LINK_CROP_SLIDERS : LABEL.UNLINK_CROP_SLIDERS}
-        onClick={() => toggleIsLinked()} />
+	return (
+		<div className="crop-control">
+			<IconButton
+				icon={`link${isLinked ? '' : '_off'}`}
+				title={isLinked ? LABEL.LINK_CROP_SLIDERS : LABEL.UNLINK_CROP_SLIDERS}
+				onClick={() => toggleIsLinked()} />
 			<NumberInput
 				name="slider-input"
 				value={cropImageAValueForInput}
 				defaultValue={MIN}
 				onChange={setLeftFromInput}
 				allowNegativeValues={false} />
-    	<Slider
+			<Slider
 				min={MIN}
 				max={SLIDER_MAX}
 				leftThumb={{
@@ -166,6 +166,6 @@ export default function StitchAdjustControls({ isVertical }: Props) {
 				icon="compress"
 				iconAngle={isVertical ? 0 : 90}
 				onClick={resetCropValues} />
-    </div>
-  )
+		</div>
+	)
 }

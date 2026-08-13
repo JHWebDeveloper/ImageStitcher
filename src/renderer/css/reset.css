@@ -32,7 +32,7 @@
 
 	p { text-wrap: pretty; }
 
-  fieldset { border: 0 }
+	fieldset { border: 0 }
 
 	input, select { field-sizing: content; }
 
@@ -49,4 +49,4 @@
 	#root {
 		isolation: isolate;
 	}
-  
+	

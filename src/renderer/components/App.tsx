@@ -22,8 +22,8 @@ function Main({ imageAFormat, isImageBLoaded }: MainProps) {
 
 	useEffect(() => {
 		setErrorListener((err: Error) => {
-      toastr.error(err.message)
-    })
+			toastr.error(err.message)
+		})
 
 		return removeErrorListener
 	}, [])

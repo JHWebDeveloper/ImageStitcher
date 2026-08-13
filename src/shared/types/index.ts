@@ -2,13 +2,13 @@ import { type WebContents } from 'electron'
 import { type FormatEnum } from 'sharp'
 
 import {
-  ALIGNMENT_TYPE,
-  CHANNEL,
-  FIT_TYPE,
-  FORMAT,
-  POST_SAVE_ACTION,
-  SAVE_TYPE,
-  SIDE,
+	ALIGNMENT_TYPE,
+	CHANNEL,
+	FIT_TYPE,
+	FORMAT,
+	POST_SAVE_ACTION,
+	SAVE_TYPE,
+	SIDE,
 } from '../constants'
 
 export type AlignmentTypeValue = typeof ALIGNMENT_TYPE[keyof typeof ALIGNMENT_TYPE]
@@ -19,125 +19,125 @@ export type PostSaveAction = typeof POST_SAVE_ACTION[keyof typeof POST_SAVE_ACTI
 export type Side = typeof SIDE[keyof typeof SIDE]
 
 export interface SideOption {
-  side: Side
+	side: Side
 }
 
 export interface UploadImageOptions extends SideOption {
-  pathOrBuffer?: string | Buffer<ArrayBufferLike>
-  format?: UploadImageOptions['pathOrBuffer'] extends string ? never : keyof FormatEnum
-  shouldReplace?: boolean
+	pathOrBuffer?: string | Buffer<ArrayBufferLike>
+	format?: UploadImageOptions['pathOrBuffer'] extends string ? never : keyof FormatEnum
+	shouldReplace?: boolean
 }
 
 export interface RotateOptions extends SideOption {
-  ccw: boolean
+	ccw: boolean
 }
 
 export interface ToggleOrientationOps {
-  shouldRotate?: boolean
-  shouldSwap?: boolean
+	shouldRotate?: boolean
+	shouldSwap?: boolean
 }
 
 export interface SaveOptions {
-  format: keyof FormatEnum
-  postSaveAction: PostSaveAction
-  deleteA: boolean
-  deleteB: boolean
-  saveType: SaveTypeValue
-  shouldWarn: boolean
+	format: keyof FormatEnum
+	postSaveAction: PostSaveAction
+	deleteA: boolean
+	deleteB: boolean
+	saveType: SaveTypeValue
+	shouldWarn: boolean
 }
 
 export interface StitchResult {
-  base64: string | undefined
-  isImageALoaded: boolean
-  isImageBLoaded: boolean
-  isVertical: boolean
-  isImageASideways: boolean
-  isImageBSideways: boolean
-  hasSizeDifference: boolean
-  fitType: FitTypeValue
-  imageAFormat: keyof FormatEnum
-  imageAHasOriginal: boolean
-  imageBHasOriginal: boolean
+	base64: string | undefined
+	isImageALoaded: boolean
+	isImageBLoaded: boolean
+	isVertical: boolean
+	isImageASideways: boolean
+	isImageBSideways: boolean
+	hasSizeDifference: boolean
+	fitType: FitTypeValue
+	imageAFormat: keyof FormatEnum
+	imageAHasOriginal: boolean
+	imageBHasOriginal: boolean
 }
 
 export interface StitchResponse {
-  timestamp: number
-  result: StitchResult | undefined
+	timestamp: number
+	result: StitchResult | undefined
 }
 
 export type AdjustStitchOpts = {
-  cropImageAValue: number
-  cropImageBValue: number
+	cropImageAValue: number
+	cropImageBValue: number
 }
 
 export interface IpcChannel {
-  [CHANNEL.ADJUST_STITCH]: {
-    payload: AdjustStitchOpts
-  }
-  [CHANNEL.CLEAR_BOTH_IMAGES]: {
-    payload: {}
-  }
-  [CHANNEL.CLEAR_IMAGE]: {
-    payload: SideOption
-  }
-  [CHANNEL.DISPLAY_ERROR_MESSAGE]: {
-    payload: Error
-  }
-  [CHANNEL.DISPLAY_STITCH_RESULT]: {
-    payload: StitchResponse
-  }
-  [CHANNEL.FLATTEN_IMAGE]: {
-    payload: { format: keyof FormatEnum }
-  }
-  [CHANNEL.IS_MERGE_RESULT_READY]: {
-    payload: {},
-    response: boolean
-  }
-  [CHANNEL.ROTATE_IMAGE]: {
-    payload: RotateOptions
-  }
-  [CHANNEL.SAVE_IMAGE]: {
-    payload: SaveOptions
-  }
-  [CHANNEL.SET_ALIGNMENT_TYPE]: {
-    payload: { alignmentType: AlignmentTypeValue }
-  }
-  [CHANNEL.SET_BACKGROUND_COLOR]: {
-    payload: { backgroundColor: string }
-  }
-  [CHANNEL.SET_BACKGROUND_OPACITY]: {
-    payload: { backgroundOpacity: number }
-  }
-  [CHANNEL.SET_FIT_TYPE]: {
-    payload: { fitType: FitTypeValue }
-  }
-  [CHANNEL.SET_PREVIEW_BOUNDS]: {
-    payload: {
-      width: number
-      height: number
-    }
-  }
-  [CHANNEL.SWAP_IMAGES]: {
-    payload: {}
-  }
-  [CHANNEL.TOGGLE_FLIP]: {
-    payload: SideOption
-  }
-  [CHANNEL.TOGGLE_FLOP]: {
-    payload: SideOption
-  }
-  [CHANNEL.TOGGLE_ORIENTATION]: {
-    payload: {
-      shouldSwap: boolean
-      shouldRotate: boolean
-    }
-  }
-  [CHANNEL.UPLOAD_IMAGE]: {
-    payload: UploadImageOptions
-  }
-  [CHANNEL.UPLOAD_IMAGES]: {
-    payload: { imagePaths?: string[] }
-  }
+	[CHANNEL.ADJUST_STITCH]: {
+		payload: AdjustStitchOpts
+	}
+	[CHANNEL.CLEAR_BOTH_IMAGES]: {
+		payload: {}
+	}
+	[CHANNEL.CLEAR_IMAGE]: {
+		payload: SideOption
+	}
+	[CHANNEL.DISPLAY_ERROR_MESSAGE]: {
+		payload: Error
+	}
+	[CHANNEL.DISPLAY_STITCH_RESULT]: {
+		payload: StitchResponse
+	}
+	[CHANNEL.FLATTEN_IMAGE]: {
+		payload: { format: keyof FormatEnum }
+	}
+	[CHANNEL.IS_MERGE_RESULT_READY]: {
+		payload: {},
+		response: boolean
+	}
+	[CHANNEL.ROTATE_IMAGE]: {
+		payload: RotateOptions
+	}
+	[CHANNEL.SAVE_IMAGE]: {
+		payload: SaveOptions
+	}
+	[CHANNEL.SET_ALIGNMENT_TYPE]: {
+		payload: { alignmentType: AlignmentTypeValue }
+	}
+	[CHANNEL.SET_BACKGROUND_COLOR]: {
+		payload: { backgroundColor: string }
+	}
+	[CHANNEL.SET_BACKGROUND_OPACITY]: {
+		payload: { backgroundOpacity: number }
+	}
+	[CHANNEL.SET_FIT_TYPE]: {
+		payload: { fitType: FitTypeValue }
+	}
+	[CHANNEL.SET_PREVIEW_BOUNDS]: {
+		payload: {
+			width: number
+			height: number
+		}
+	}
+	[CHANNEL.SWAP_IMAGES]: {
+		payload: {}
+	}
+	[CHANNEL.TOGGLE_FLIP]: {
+		payload: SideOption
+	}
+	[CHANNEL.TOGGLE_FLOP]: {
+		payload: SideOption
+	}
+	[CHANNEL.TOGGLE_ORIENTATION]: {
+		payload: {
+			shouldSwap: boolean
+			shouldRotate: boolean
+		}
+	}
+	[CHANNEL.UPLOAD_IMAGE]: {
+		payload: UploadImageOptions
+	}
+	[CHANNEL.UPLOAD_IMAGES]: {
+		payload: { imagePaths?: string[] }
+	}
 }
 
 type SafeLookup<T, K extends PropertyKey> = K extends keyof T ? T[K] : undefined

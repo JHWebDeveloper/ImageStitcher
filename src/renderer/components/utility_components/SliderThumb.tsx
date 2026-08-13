@@ -10,38 +10,38 @@ interface Props extends SliderThumbProps {
 	min?: number
 	max?: number
 	range: number
-  sliderId: string
-  sliderMin?: number
-  step?: number
-  microStep?: number
-  onDoubleClick?: (e: MouseEventSpan) => void
-  thumbRef?: Ref<StartDragRef>
+	sliderId: string
+	sliderMin?: number
+	step?: number
+	microStep?: number
+	onDoubleClick?: (e: MouseEventSpan) => void
+	thumbRef?: Ref<StartDragRef>
 	trackRef: RefObject<HTMLElement | null>
 }
 
 type GetClickPos = (e: MouseEventSpan, thumb?: HTMLElement | null) => number
 
 function assertsIsHTMLSpanElement(el: unknown): asserts el is typeof HTMLSpanElement {
-  if (el instanceof HTMLSpanElement) return
-  
-  throw new Error('Slider thumb element not captured')
+	if (el instanceof HTMLSpanElement) return
+	
+	throw new Error('Slider thumb element not captured')
 }
 
 function createClickPositionGetter(alignment: string): GetClickPos {
 	switch (alignment) {
 		case 'left':
 			return (e, thumb) => {
-        assertsIsHTMLSpanElement(thumb)
-        return e.clientX - thumb.getBoundingClientRect().left
-      }
+				assertsIsHTMLSpanElement(thumb)
+				return e.clientX - thumb.getBoundingClientRect().left
+			}
 		case 'right':
 			return (e, thumb) => {
-        assertsIsHTMLSpanElement(thumb)
-        return e.clientX - thumb.getBoundingClientRect().right
-      }
+				assertsIsHTMLSpanElement(thumb)
+				return e.clientX - thumb.getBoundingClientRect().right
+			}
 		default:
 			return (e, thumb) => {
-        assertsIsHTMLSpanElement(thumb)
+				assertsIsHTMLSpanElement(thumb)
 
 				const { width, right } = thumb.getBoundingClientRect()
 
@@ -107,16 +107,16 @@ export default function SliderThumb({
 		e.preventDefault()
 		e.stopPropagation()
 
-    thumb ??= e.currentTarget
-    clickPos ??= getClickPos(e, thumb)
+		thumb ??= e.currentTarget
+		clickPos ??= getClickPos(e, thumb)
 
 		thumb?.focus()
 	
-    const controller = new AbortController()
+		const controller = new AbortController()
 		const { signal } = controller
 
 		const onMouseUp = () => {
-      controller.abort()
+			controller.abort()
 		}
 	
 		window.addEventListener('mousemove', e => {
@@ -136,7 +136,7 @@ export default function SliderThumb({
 
 		e.preventDefault()
 
-    const incr = e.shiftKey ? microStep : step
+		const incr = e.shiftKey ? microStep : step
 		const next = rightOrUp ? Math.min(value + incr, max) : Math.max(value - incr, min)
 
 		onChange(next)

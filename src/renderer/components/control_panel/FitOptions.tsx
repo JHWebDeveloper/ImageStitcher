@@ -15,28 +15,28 @@ import BackgroundOpacityOptions from './BackgroundOpacityOptions'
 interface Props extends PropsWithChildren {}
 
 export default function FitOptions({ children }: Props) {
-  const { fitType, isVertical } = use(ResponseContext)
-  const { setFitType } = use(ElectronAPI)
-  const isContain = fitType === FIT_TYPE.CONTAIN
+	const { fitType, isVertical } = use(ResponseContext)
+	const { setFitType } = use(ElectronAPI)
+	const isContain = fitType === FIT_TYPE.CONTAIN
 
-  return (
-    <div className="fit-options">
-      <Select<FitTypeValue>
-        label={LABEL.SIZING}
-        value={fitType}
-        onChange={setFitType}
-        optionLabels={LABEL} 
-        optionValues={FIT_TYPE} />
-      <ToggleComponent shouldShow={isContain || fitType === FIT_TYPE.COVER}>
-        <AlignmentOptions isVertical={isVertical} />
-      </ToggleComponent>
-      <ToggleComponent shouldShow={isContain}>
-        <fieldset name="background-color">
-          <legend>{LABEL.BACKGROUND_COLOR}</legend>
-          <BackgroundColorOptions />
-          <BackgroundOpacityOptions />
-        </fieldset>
-      </ToggleComponent>
-    </div>
-  )
+	return (
+		<div className="fit-options">
+			<Select<FitTypeValue>
+				label={LABEL.SIZING}
+				value={fitType}
+				onChange={setFitType}
+				optionLabels={LABEL} 
+				optionValues={FIT_TYPE} />
+			<ToggleComponent shouldShow={isContain || fitType === FIT_TYPE.COVER}>
+				<AlignmentOptions isVertical={isVertical} />
+			</ToggleComponent>
+			<ToggleComponent shouldShow={isContain}>
+				<fieldset name="background-color">
+					<legend>{LABEL.BACKGROUND_COLOR}</legend>
+					<BackgroundColorOptions />
+					<BackgroundOpacityOptions />
+				</fieldset>
+			</ToggleComponent>
+		</div>
+	)
 }

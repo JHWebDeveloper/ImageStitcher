@@ -37,9 +37,9 @@ body {
 }
 
 main {
-  display: flex;
-  inline-size: 100%;
-  block-size: 100%;
+	display: flex;
+	inline-size: 100%;
+	block-size: 100%;
 
 	&.left-aligned {
 		flex-direction: row-reverse;
@@ -66,11 +66,11 @@ input[type="color"] {
 
 select, label, legend {
 	font-size: 0.875rem;
-  text-wrap: nowrap;
+	text-wrap: nowrap;
 }
 
 select {
-  display: block;
+	display: block;
 	border-radius: 4px;
 	background-color: var(--primary-color);
 	color: var(--bg-color);
@@ -82,8 +82,8 @@ select {
 
 legend,
 :not(fieldset) > label {
-  display: block;
-  font-weight: 500;
+	display: block;
+	font-weight: 500;
 }
 
 legend { margin-block-end: 5px; }
@@ -105,7 +105,7 @@ button > span {
 
 .image-stitch {
 	position: relative;
-  display: flex;
+	display: flex;
 }
 
 .image-stitch > span,
@@ -116,7 +116,7 @@ button > span {
 
 .image-stitch > span,
 .image-stitch-result {
-  position: absolute;
+	position: absolute;
 }
 
 .image-stitch > span {
@@ -129,11 +129,11 @@ button > span {
 }
 
 .image-stitch-result {
-  block-size: 100%;
-  inline-size: 100%;
-  object-fit: contain;
-  object-position: center;
-  z-index: -1;
+	block-size: 100%;
+	inline-size: 100%;
+	object-fit: contain;
+	object-position: center;
+	z-index: -1;
 
 	&.portrait {
 		flex-flow: column;
@@ -141,29 +141,29 @@ button > span {
 }
 
 .image-drop {
-  flex: 1;
-  display: inherit;
-  justify-content: center;
-  align-items: center;
-  block-size: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  opacity: 0;
-  color: #fff;
-  transition: background-color 150ms, opacity 150ms;
+	flex: 1;
+	display: inherit;
+	justify-content: center;
+	align-items: center;
+	block-size: 100%;
+	background-color: rgba(0, 0, 0, 0.8);
+	opacity: 0;
+	color: #fff;
+	transition: background-color 150ms, opacity 150ms;
 }
 
 .image-stitch.dragging-over > .image-drop {
-  opacity: 1;
+	opacity: 1;
 }
 
 .image-stitch.dragging-over > .image-drop.dragging-over {
-  background-color: rgba(0, 0, 0, 0.9);
+	background-color: rgba(0, 0, 0, 0.9);
 }
 
 .control-panel {
-  display: inherit;
+	display: inherit;
 	grid-row: 2 / span 2;
-  grid-template-rows: subgrid;
+	grid-template-rows: subgrid;
 	grid-template-columns: repeat(12, 1fr);
 	justify-content: center;
 }
@@ -234,10 +234,10 @@ button > span {
 	position: relative;
 	grid-column: 2;
 	grid-auto-rows: min-content;
-  align-content: center;
-  gap: 20px;
+	align-content: center;
+	gap: 20px;
 	padding: 12px;
-  min-inline-size: 261px;
+	min-inline-size: 261px;
 
 	&::before {
 		content: '';
@@ -297,7 +297,7 @@ fieldset {
 }
 
 .save-buttons {
-  display: flex;
+	display: flex;
 
 	& > button {
 		flex: 1

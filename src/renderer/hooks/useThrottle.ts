@@ -29,7 +29,7 @@ function throttle<T>(
 }
 
 export function useThrottle<T>(callback: Callback<T>, delay: number) {
-  const throttledFunction = useRef(throttle(callback, delay))
+	const throttledFunction = useRef(throttle(callback, delay))
 
-  return [ throttledFunction.current, callback ]
+	return [ throttledFunction.current, callback ]
 }

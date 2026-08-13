@@ -19,7 +19,7 @@ export interface SliderThumbProps {
 export type StartDrag = (e: MouseEvent<HTMLSpanElement>, clickPos?: number, thumb?: HTMLElement | null, track?: DOMRect) => void
 
 export interface StartDragRef {
-  startDrag: StartDrag
+	startDrag: StartDrag
 }
 
 export interface ChoiceInputProps<T> {

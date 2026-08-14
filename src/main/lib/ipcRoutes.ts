@@ -14,7 +14,7 @@ function setListener<K extends keyof IpcChannel>(
 
 function setHandler<K extends keyof IpcChannel>(
 	channel: K,
-	callback: (evt: IpcMainInvokeEvent, opts: IpcChannel[K]['payload']) => PossiblePromise<SafeResponse<IpcChannel[K], 'response'> | void>
+	callback: (evt: IpcMainInvokeEvent, opts: IpcChannel[K]['payload']) => PossiblePromise<SafeResponse<IpcChannel[K], 'response'>> | Promise<void> | void
 ) {
 	ipcMain.handle(channel, callback)
 }

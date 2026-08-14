@@ -38,7 +38,15 @@ export default defineConfig([
 			'@stylistic/jsx-closing-bracket-location': ['error', 'after-props'],
 			'@stylistic/jsx-indent-props': ['error', 'tab'],
 			'@stylistic/multiline-ternary': ['off'],
-			'@stylistic/no-tabs': ['error', { allowIndentationTabs: true }]
+			'@stylistic/no-tabs': ['error', {
+				allowIndentationTabs: true
+			}],
+			'@typescript-eslint/no-empty-function': ['error', {
+				allow: ['methods']
+			}],
+			'@typescript-eslint/no-empty-object-type': ['error', {
+				allowInterfaces: 'with-single-extends'
+			}]
 		}
 	}
 ])

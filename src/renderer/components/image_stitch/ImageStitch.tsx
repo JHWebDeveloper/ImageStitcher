@@ -12,12 +12,12 @@ import { LayoutContext } from '../../context/LayoutContext'
 import ToggleComponent from '../utility_components/ToggleComponent'
 import ImageDrop from './ImageDrop'
 
-function onDragEnter(e: DivDragEvent): void {
+function onDragEnter(e: DivDragEvent) {
 	e.preventDefault()
 	e.currentTarget.classList.add('dragging-over')
 }
 
-function onDragLeave(e: DivDragEvent): void {
+function onDragLeave(e: DivDragEvent) {
 	e.currentTarget.classList.remove('dragging-over')
 }
 

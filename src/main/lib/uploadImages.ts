@@ -20,9 +20,9 @@ export class ImageUploadData {
 	name: Side
 	originalPath: string | null = null
 	srcPath: string | null = null
-	angle = DEFAULT_VALUE.ANGLE
-	flip = DEFAULT_VALUE.FLIP
-	flop = DEFAULT_VALUE.FLOP
+	angle: number = DEFAULT_VALUE.ANGLE
+	flip: boolean = DEFAULT_VALUE.FLIP
+	flop: boolean = DEFAULT_VALUE.FLOP
 	private _crop = 1
 
 	constructor(imageName: Side) {
@@ -122,7 +122,7 @@ export class ImageStitchData implements Record<Side, ImageUploadData> {
 	B = new ImageUploadData(SIDE.B)
 	previewMaxWidth = 0
 	previewMaxHeight = 0
-	isVertical = DEFAULT_VALUE.IS_VERTICAL
+	isVertical: boolean = DEFAULT_VALUE.IS_VERTICAL
 	fitType: FitTypeValue = DEFAULT_VALUE.FIT_TYPE
 	alignmentType: AlignmentTypeValue = DEFAULT_VALUE.ALIGNMENT_TYPE
 	private _background = DEFAULT_VALUE.BACKGROUND_COLOR_RGB

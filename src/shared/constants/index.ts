@@ -70,4 +70,4 @@ export const DEFAULT_VALUE = {
 	SAVE_ON_DROP: true,
 	SAVE_TYPE: SAVE_TYPE.REPLACE_A,
 	SHOULD_WARN: true
-}
+} as const

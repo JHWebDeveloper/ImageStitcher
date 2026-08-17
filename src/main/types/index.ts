@@ -14,5 +14,3 @@ export interface StitchResultRaw {
 	hasSizeDifference: boolean
 	imageAFormat: keyof FormatEnum
 }
-
-export type PossiblePromise<T> = Promise<T> | T

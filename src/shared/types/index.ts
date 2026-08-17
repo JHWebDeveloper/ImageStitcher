@@ -139,6 +139,8 @@ export interface IpcChannel {
 	}
 }
 
+export type PossiblePromise<T> = Promise<T> | T
+
 type SafeLookup<T, K extends PropertyKey> = K extends keyof T ? T[K] : undefined
 
 export type SafeResponse<T, K extends PropertyKey> = SafeLookup<T, K>

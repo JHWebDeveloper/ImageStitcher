@@ -47,7 +47,7 @@ const useCaptureLRValues = (): [
 
 export default function StitchAdjustControls({ isVertical }: Props) {
 	const { adjustStitch } = use(ElectronAPI)
-	const [ [ cropImageAValue, cropImageBValue ], setCropValues ] = useState<[ number, number ]>(DEFAULT_VALUE.CROP_VALUES)
+	const [ [ cropImageAValue, cropImageBValue ], setCropValues ] = useState(DEFAULT_VALUE.CROP_VALUES)
 	const [ capturedL, capturedR, captureLRValues, resetLRValues ] = useCaptureLRValues()
 	const [ isLinked, toggleIsLinked ] = useToggle(true)
 

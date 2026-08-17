@@ -28,26 +28,23 @@ export default defineConfig([
 			tseslint.configs.stylistic
 		],
 		rules: {
-			'@stylistic/array-bracket-spacing': [ 'error', 'always', {
-				objectsInArrays: false,
-				arraysInArrays: false
-			}],
-			'@stylistic/arrow-parens': [ 'error', 'as-needed' ],
-			'@stylistic/brace-style': [ 'error', '1tbs' ],
-			'@stylistic/comma-dangle': [ 'error', {
+			'@stylistic/array-bracket-spacing': ['off'],
+			'@stylistic/arrow-parens': ['error', 'as-needed'],
+			'@stylistic/brace-style': ['error', '1tbs'],
+			'@stylistic/comma-dangle': ['error', {
 				generics: 'ignore'
 			}],
-			'@stylistic/indent': [ 'error', 'tab' ],
-			'@stylistic/jsx-closing-bracket-location': [ 'error', 'after-props' ],
-			'@stylistic/jsx-indent-props': [ 'error', 'tab' ],
-			'@stylistic/multiline-ternary': [ 'off' ],
-			'@stylistic/no-tabs': [ 'error', {
+			'@stylistic/indent': ['error', 'tab'],
+			'@stylistic/jsx-closing-bracket-location': ['error', 'after-props'],
+			'@stylistic/jsx-indent-props': ['error', 'tab'],
+			'@stylistic/multiline-ternary': ['off'],
+			'@stylistic/no-tabs': ['error', {
 				allowIndentationTabs: true
 			}],
-			'@typescript-eslint/no-empty-function': [ 'error', {
-				allow: [ 'methods' ]
+			'@typescript-eslint/no-empty-function': ['error', {
+				allow: ['methods']
 			}],
-			'@typescript-eslint/no-empty-object-type': [ 'error', {
+			'@typescript-eslint/no-empty-object-type': ['error', {
 				allowInterfaces: 'with-single-extends'
 			}]
 		}

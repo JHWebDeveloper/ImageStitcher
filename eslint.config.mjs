@@ -28,7 +28,10 @@ export default defineConfig([
 			tseslint.configs.stylistic
 		],
 		rules: {
-			'@stylistic/array-bracket-spacing': ['off'],
+			'@stylistic/array-bracket-spacing': ['error', 'always', {
+				objectsInArrays: false,
+				arraysInArrays: false
+			}],
 			'@stylistic/arrow-parens': ['error', 'as-needed'],
 			'@stylistic/brace-style': ['error', '1tbs'],
 			'@stylistic/comma-dangle': ['error', {

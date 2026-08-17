@@ -12,7 +12,7 @@ export const MAIN_PATH = path.join(SRC_DIR, 'main')
 
 export const BUILD_ASSETS_PATH = path.join(SRC_DIR, 'build_assets')
 
-export const PAGES: readonly string[] = ['index']
+export const PAGES: readonly string[] = [ 'index' ]
 
 export const INDEX_PATH = path.join(RENDERER_PATH, `${PAGES[0]}.tsx`)
 

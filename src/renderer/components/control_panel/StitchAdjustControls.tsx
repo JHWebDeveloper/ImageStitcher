@@ -47,7 +47,7 @@ const useCaptureLRValues = (): [
 
 export default function StitchAdjustControls({ isVertical }: Props) {
 	const { adjustStitch } = use(ElectronAPI)
-	const [ [ cropImageAValue, cropImageBValue ], setCropValues ] = useState<[number, number]>(DEFAULT_VALUE.CROP_VALUES)
+	const [[ cropImageAValue, cropImageBValue ], setCropValues ] = useState<[ number, number ]>(DEFAULT_VALUE.CROP_VALUES)
 	const [ capturedL, capturedR, captureLRValues, resetLRValues ] = useCaptureLRValues()
 	const [ isLinked, toggleIsLinked ] = useToggle(true)
 
@@ -55,7 +55,7 @@ export default function StitchAdjustControls({ isVertical }: Props) {
 	const cropImageBValueForInput = round(cropImageBValue - 100)
 
 	const setLeft = (nextLeftValue: number) => {
-		setCropValues(([, prevRightValue ]) => ([
+		setCropValues(([ , prevRightValue ]) => ([
 			nextLeftValue,
 			prevRightValue
 		]))
@@ -155,7 +155,7 @@ export default function StitchAdjustControls({ isVertical }: Props) {
 					min: MAX,
 					onChange: setRightAction
 				}}
-				markers={[MAX]} />
+				markers={[ MAX ]} />
 			<NumberInput
 				name="slider-input"
 				value={cropImageBValueForInput}

@@ -11,7 +11,7 @@ import { BUILD_PATH, CSS_PATH, PAGES, RENDERER_PATH } from './constants'
 import common from './webpack.config.common'
 
 const config: webpack.Configuration = {
-	target: ['web', 'electron-renderer'],
+	target: [ 'web', 'electron-renderer' ],
 	entry: {
 		common: [
 			'react',

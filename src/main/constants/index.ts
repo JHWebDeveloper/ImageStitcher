@@ -38,4 +38,4 @@ export const ERROR_MSG = {
 	UPLOAD_IMAGE: `${ERROR_PREFIX} upload the image`,
 	UPLOAD_IMAGES: `${ERROR_PREFIX} upload multiple images`,
 	WEB_CONTENTS_REQUIRED: 'An argument for parameter webContents is required when no image path or buffer is provided'
-}
+} as const

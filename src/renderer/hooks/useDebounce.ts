@@ -18,5 +18,5 @@ function debounce<T>(callback: Callback<T>, delay: number) {
 export function useDebounce<T>(callback: Callback<T>, delay: number) {
 	const debouncedFunction = useRef(debounce(callback, delay))
 
-	return [ debouncedFunction.current, callback ]
+	return [debouncedFunction.current, callback]
 }

@@ -57,7 +57,7 @@ export const DEFAULT_VALUE = {
 		alpha: BACKGROUND_OPACITY / 100
 	},
 	BACKGROUND_OPACITY,
-	CROP_VALUES: [ 100, 100 ] satisfies [ number, number ],
+	CROP_VALUES: [ 100, 100 ] satisfies [number, number],
 	DELETE_A: true,
 	DELETE_B: true,
 	FIT_TYPE: FIT_TYPE.UPSCALE,

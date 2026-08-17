@@ -36,5 +36,5 @@ export function useStateCallback<O, I = O>(
 		}
 	} : setState
 
-	return [ stateValue, dispatch, setState, callback ]
+	return [stateValue, dispatch, setState, callback]
 }

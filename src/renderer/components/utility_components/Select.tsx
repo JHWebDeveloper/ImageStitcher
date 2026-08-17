@@ -42,7 +42,7 @@ export default function Select<const T extends string>({
 		const fallback = listOfValues.at(-1)
 
 		if (isDefined(fallback)) onChange(fallback)
-	}, [ isValidSelection ])
+	}, [isValidSelection])
 
 	return isValidSelection ? (
 		<Label label={label}>

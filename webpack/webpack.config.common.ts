@@ -7,7 +7,7 @@ const config: webpack.Configuration = {
 			{
 				test: /\.[tj]sx?$/,
 				exclude: /nodemodules/,
-				use: [ 'babel-loader' ]
+				use: ['babel-loader']
 			}
 		]
 	},
@@ -17,8 +17,8 @@ const config: webpack.Configuration = {
 		})
 	],
 	resolve: {
-		extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
-		plugins: [ new TsconfigPathsPlugin() ]
+		extensions: ['.js', '.jsx', '.ts', '.tsx'],
+		plugins: [new TsconfigPathsPlugin()]
 	},
 	node: {
 		__dirname: false,

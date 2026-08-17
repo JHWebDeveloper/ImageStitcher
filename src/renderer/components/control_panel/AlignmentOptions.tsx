@@ -13,8 +13,8 @@ interface Props {
 export default function AlignmentOptions({ isVertical }: Props) {
 	const { setAlignmentType } = use(ElectronAPI)
 	const [ labelStart, labelEnd, horizontalOrVertical ] = isVertical
-		? [ LABEL.LEFT, LABEL.RIGHT, 'horizontal' ]
-		: [ LABEL.TOP, LABEL.BOTTOM, 'vertical' ]
+		? [LABEL.LEFT, LABEL.RIGHT, 'horizontal']
+		: [LABEL.TOP, LABEL.BOTTOM, 'vertical']
 
 	return (
 		<fieldset name="alignment-options">

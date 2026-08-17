@@ -6,7 +6,7 @@ import { BUILD_PATH, PRELOAD_PATH } from './constants'
 import common from './webpack.config.common'
 
 const config: webpack.Configuration = {
-	target: [ 'electron-preload' ],
+	target: ['electron-preload'],
 	entry: PRELOAD_PATH,
 	output: {
 		path: BUILD_PATH,

@@ -75,7 +75,7 @@ export function SaveContextProvider({
 
 	useEffect(() => {
 		if (!isImageBLoaded && format !== imageAFormat) setFormat(imageAFormat)
-	}, [ imageAFormat, isImageBLoaded ])
+	}, [imageAFormat, isImageBLoaded])
 
 	return (
 		<SaveContext value={{

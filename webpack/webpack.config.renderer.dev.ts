@@ -27,7 +27,7 @@ const config: webpack.Configuration = {
 		setupMiddlewares(middlewares) {
 			console.log('Starting preload.js builder...')
 
-			const preloadProcess = spawn('npm', [ 'run', 'start:preload' ], {
+			const preloadProcess = spawn('npm', ['run', 'start:preload'], {
 				shell: true,
 				stdio: 'inherit'
 			}).on('close', (code: number) => {
@@ -38,7 +38,7 @@ const config: webpack.Configuration = {
 
 			console.log('Starting Main Process...')
 
-			spawn('npm', [ 'run', 'start:main' ], {
+			spawn('npm', ['run', 'start:main'], {
 				shell: true,
 				stdio: 'inherit'
 			}).on('close', (code: number) => {

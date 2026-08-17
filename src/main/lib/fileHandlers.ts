@@ -39,12 +39,12 @@ export async function selectImageDialog(
 		filePaths: []
 	}
 
-	const properties: OpenDialogOptions['properties'] = [ 'openFile', 'createDirectory' ]
+	const properties: OpenDialogOptions['properties'] = ['openFile', 'createDirectory']
 
 	if (maxSelections === 2) properties.push('multiSelections')
 
 	return dialog.showOpenDialog(browserWindow, {
-		filters: [ IMAGE_FILTER ],
+		filters: [IMAGE_FILTER],
 		properties
 	})
 }
@@ -60,7 +60,7 @@ export async function emptyUploadDirectory() {
 async function warnBeforeOverwriting(originalFilePath: string) {
 	const { response } = await dialog.showMessageBox({
 		message: `Overwrite ${path.basename(originalFilePath)}?`,
-		buttons: [ 'Cancel', 'OK' ]
+		buttons: ['Cancel', 'OK']
 	})
 
 	return !!response
@@ -133,7 +133,7 @@ async function saveImageWithDialog({
 			imageStitchData.B.originalPath,
 			format
 		),
-		properties: [ 'createDirectory' ]
+		properties: ['createDirectory']
 	})
 
 	if (result.canceled) return result

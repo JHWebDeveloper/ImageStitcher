@@ -11,5 +11,5 @@ export function useToggle(initState = false): [ boolean, UseToggleDispatch ] {
 		))
 	}
 
-	return [ value, toggleValue ]
+	return [value, toggleValue]
 }

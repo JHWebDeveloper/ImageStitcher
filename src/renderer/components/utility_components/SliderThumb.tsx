@@ -144,7 +144,7 @@ export default function SliderThumb({
 
 	useEffect(() => {
 		thumbPos.current = value
-	}, [ value ])
+	}, [value])
 
 	return (
 		<span

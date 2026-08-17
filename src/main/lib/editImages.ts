@@ -124,7 +124,7 @@ function scaleImage(
 		})
 	}
 
-	return [ imgAResized, imgBResized ]
+	return [imgAResized, imgBResized]
 }
 
 async function cropImage(preparedImage: Sharp, image: ImageUploadData, isVertical: boolean) {
@@ -205,7 +205,7 @@ export async function renderSingleImage(
 		preparedImage = preparedImage.toFormat(format)
 	}
 
-	const [ result, { format: imageAFormat }] = await Promise.all([
+	const [ result, { format: imageAFormat } ] = await Promise.all([
 		preparedImage.toBuffer(),
 		sharp(image.srcPath).metadata()
 	])

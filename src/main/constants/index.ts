@@ -18,7 +18,7 @@ export const LOSSLESS_IMAGE_FORMAT: keyof FormatEnum = 'png'
 
 export const IMAGE_FILTER = {
 	name: 'Images',
-	extensions: [ 'avif', 'gif', 'jpeg', 'jpg', 'png', 'tif', 'tiff', 'webp' ]
+	extensions: ['avif', 'gif', 'jpeg', 'jpg', 'png', 'tif', 'tiff', 'webp']
 } as const satisfies FileFilter
 
 const ERROR_PREFIX = 'An error occurred while attempting to'

@@ -30,9 +30,9 @@ const config: webpack.Configuration = {
 			const preloadProcess = spawn('npm', ['run', 'start:preload'], {
 				shell: true,
 				stdio: 'inherit'
-			}).on('close', (code: number) => {
+			}).on('close', code => {
 				process.exit(code)
-			}).on('error', (err: Error) => {
+			}).on('error', err => {
 				console.error(err)
 			})
 
@@ -41,10 +41,10 @@ const config: webpack.Configuration = {
 			spawn('npm', ['run', 'start:main'], {
 				shell: true,
 				stdio: 'inherit'
-			}).on('close', (code: number) => {
+			}).on('close', code => {
 				preloadProcess.kill()
 				process.exit(code)
-			}).on('error', (err: Error) => {
+			}).on('error', err => {
 				console.error(err)
 			})
 

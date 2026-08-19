@@ -22,9 +22,14 @@
 		"checkJs": true
 	},
 	"files": [
-		"src/renderer/index.d.ts"
+		"src/renderer/index.d.ts",
 	],
-	"include": ["src/**/*.ts", "src/**/*.tsx"],
+	"include": [
+		"src/**/*.ts",
+		"src/**/*.tsx",
+		"webpack/**/*.ts",
+		"webpack/**/*.tsx"
+	],
 	"exclude": [
 		"./node_modules/**/*",
 		"./build/**/*",

@@ -1,26 +1,36 @@
 import { contextBridge, ipcRenderer, type IpcRendererEvent, webUtils } from 'electron'
 
 import { CHANNEL, NAMESPACE } from './constants'
-import type { AdjustStitchOpts, AlignmentTypeValue, FitTypeValue, IpcChannel, SafeResponse, SaveOptions, StitchResponse, Side } from './types'
+import type { AdjustStitchOpts, AlignmentTypeValue, ChannelsWithPayload, ChannelsWithoutPayload, FitTypeValue, IpcChannel, IpcPayload, IpcResponse, SaveOptions, StitchResponse, Side } from './types'
 import { FormatEnum } from 'sharp'
 
+// Overload Signatures
+function send<K extends ChannelsWithPayload>(channel: K, payload: IpcChannel[K]['payload']): void
+function send<K extends ChannelsWithoutPayload>(channel: K): void
+
+// Implementation Signature
 function send<K extends keyof IpcChannel>(
 	channel: K,
-	payload: IpcChannel[K]['payload'] = {}
+	payload?: unknown
 ) {
 	ipcRenderer.send(channel, payload)
 }
 
+// Overload Signatures
+function invoke<K extends ChannelsWithPayload>(channel: K, payload: IpcChannel[K]['payload']): void
+function invoke<K extends ChannelsWithoutPayload>(channel: K): void
+
+// Implementation Signature
 function invoke<K extends keyof IpcChannel>(
 	channel: K,
-	payload: IpcChannel[K]['payload'] = {}
-): Promise<SafeResponse<IpcChannel[K], 'response'>> {
+	payload?: IpcPayload<K>
+): Promise<IpcResponse<K>> {
 	return ipcRenderer.invoke(channel, payload)
 }
 
 function setListener<K extends keyof IpcChannel>(
 	channel: K,
-	callback: (evt: IpcRendererEvent, opts: IpcChannel[K]['payload']) => void
+	callback: (evt: IpcRendererEvent, res: IpcPayload<K>) => void
 ) {
 	ipcRenderer.on(channel, callback)
 }
@@ -29,7 +39,7 @@ function removeAllListeners<K extends keyof IpcChannel>(channel: K) {
 	ipcRenderer.removeAllListeners(channel)
 }
 
-export const electronAPI = {
+const electronAPI = {
 	/* INVOKE */
 
 	uploadImage(
@@ -144,6 +154,8 @@ export const electronAPI = {
 		removeAllListeners(CHANNEL.DISPLAY_ERROR_MESSAGE)
 	}
 } as const
+
+export type ElectronAPI = typeof electronAPI
 
 contextBridge.exposeInMainWorld(NAMESPACE, Object.freeze({
 	electronAPI: Object.freeze(electronAPI)

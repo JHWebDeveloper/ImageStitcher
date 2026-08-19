@@ -1,28 +1,48 @@
 import { ipcMain, type IpcMainEvent, type IpcMainInvokeEvent } from 'electron'
 
 import { CHANNEL, ERROR_MSG } from '../constants'
-import type { IpcChannel, PossiblePromise, SafeResponse } from '../types'
+import type { ChannelsWithoutPayload, ChannelsWithPayload, IpcChannel, IpcPayload, IpcResponse, PossiblePromise } from '../types'
 
 import type { ImageStitchData } from './uploadImages'
 
 function setListener<K extends keyof IpcChannel>(
 	channel: K,
-	callback: (evt: IpcMainEvent, opts: IpcChannel[K]['payload']) => void
+	callback: K extends ChannelsWithPayload
+		? (evt: IpcMainEvent, opts: IpcChannel[K]['payload']) => void
+		: (evt: IpcMainEvent) => void
 ) {
 	ipcMain.on(channel, callback)
 }
 
+type HandlerResponse<K extends keyof IpcChannel> = PossiblePromise<IpcResponse<K>> | Promise<void>
+
 function setHandler<K extends keyof IpcChannel>(
 	channel: K,
-	callback: (evt: IpcMainInvokeEvent, opts: IpcChannel[K]['payload']) => PossiblePromise<SafeResponse<IpcChannel[K], 'response'>> | Promise<void>
+	callback: K extends ChannelsWithPayload
+		? (evt: IpcMainInvokeEvent, opts: IpcChannel[K]['payload']) => HandlerResponse<K>
+		: (evt: IpcMainInvokeEvent) => HandlerResponse<K>
 ) {
 	ipcMain.handle(channel, callback)
 }
 
-function send<K extends keyof IpcChannel>(
+// Overload Signature
+function send<K extends ChannelsWithPayload>(
 	evt: IpcMainEvent | IpcMainInvokeEvent,
 	channel: K,
 	payload: IpcChannel[K]['payload']
+): void
+
+// Overload Signature
+function send<K extends ChannelsWithoutPayload>(
+	evt: IpcMainEvent | IpcMainInvokeEvent,
+	channel: K
+): void
+
+// Implmentation Signature
+function send<K extends keyof IpcChannel>(
+	evt: IpcMainEvent | IpcMainInvokeEvent,
+	channel: K,
+	payload?: IpcPayload<K>
 ) {
 	evt.sender.send(channel, payload)
 }

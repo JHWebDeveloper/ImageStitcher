@@ -1,43 +1,11 @@
-import { contextBridge, ipcRenderer, type IpcRendererEvent, webUtils } from 'electron'
+import { contextBridge, webUtils } from 'electron'
+import type { FormatEnum } from 'sharp'
 
 import { CHANNEL, NAMESPACE } from './constants'
-import type { AdjustStitchOpts, AlignmentTypeValue, ChannelsWithPayload, ChannelsWithoutPayload, FitTypeValue, IpcChannel, IpcPayload, IpcResponse, SaveOptions, StitchResponse, Side } from './types'
-import { FormatEnum } from 'sharp'
+import type { AdjustStitchOpts, AlignmentTypeValue, FitTypeValue, SaveOptions, StitchResponse, Side } from './types'
+import { ipcRendererTypeSafe } from './utilities'
 
-// Overload Signatures
-function send<K extends ChannelsWithPayload>(channel: K, payload: IpcChannel[K]['payload']): void
-function send<K extends ChannelsWithoutPayload>(channel: K): void
-
-// Implementation Signature
-function send<K extends keyof IpcChannel>(
-	channel: K,
-	payload?: unknown
-) {
-	ipcRenderer.send(channel, payload)
-}
-
-// Overload Signatures
-function invoke<K extends ChannelsWithPayload>(channel: K, payload: IpcChannel[K]['payload']): void
-function invoke<K extends ChannelsWithoutPayload>(channel: K): void
-
-// Implementation Signature
-function invoke<K extends keyof IpcChannel>(
-	channel: K,
-	payload?: IpcPayload<K>
-): Promise<IpcResponse<K>> {
-	return ipcRenderer.invoke(channel, payload)
-}
-
-function setListener<K extends keyof IpcChannel>(
-	channel: K,
-	callback: (evt: IpcRendererEvent, res: IpcPayload<K>) => void
-) {
-	ipcRenderer.on(channel, callback)
-}
-
-function removeAllListeners<K extends keyof IpcChannel>(channel: K) {
-	ipcRenderer.removeAllListeners(channel)
-}
+const { invoke, removeAllListeners, send, setListener } = ipcRendererTypeSafe
 
 const electronAPI = {
 	/* INVOKE */

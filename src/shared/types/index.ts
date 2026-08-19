@@ -141,11 +141,11 @@ export type IpcPayload<K extends keyof IpcChannel> = SafeKey<IpcChannel[K], 'pay
 export type IpcResponse<K extends keyof IpcChannel> = SafeKey<IpcChannel[K], 'response'>
 
 export type ChannelsWithPayload = {
-  [K in keyof IpcChannel]: IpcPayload<K> extends undefined ? never : K;
+	[K in keyof IpcChannel]: IpcPayload<K> extends undefined ? never : K;
 }[keyof IpcChannel]
 
 export type ChannelsWithoutPayload = {
-  [K in keyof IpcChannel]: K extends ChannelsWithPayload ? never : K;
+	[K in keyof IpcChannel]: K extends ChannelsWithPayload ? never : K;
 }[keyof IpcChannel]
 
 export type PossiblePromise<T> = Promise<T> | T

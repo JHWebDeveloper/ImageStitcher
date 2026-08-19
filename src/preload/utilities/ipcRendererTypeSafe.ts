@@ -28,7 +28,9 @@ export function invoke<K extends keyof IpcChannel>(
 
 export function setListener<K extends keyof IpcChannel>(
 	channel: K,
-	callback: (evt: IpcRendererEvent, res: IpcPayload<K>) => void
+	callback: K extends ChannelsWithPayload
+		? (evt: IpcRendererEvent, res: IpcPayload<K>) => void
+		: (evt: IpcRendererEvent) => void
 ) {
 	ipcRenderer.on(channel, callback)
 }

@@ -1,3 +1,4 @@
+import type { IpcMainEvent, IpcMainInvokeEvent } from 'electron'
 import type { FormatEnum } from 'sharp'
 
 export * from '../../shared/types'
@@ -14,3 +15,5 @@ export interface StitchResultRaw {
 	hasSizeDifference: boolean
 	imageAFormat: keyof FormatEnum
 }
+
+export type IpcEvent = IpcMainEvent | IpcMainInvokeEvent

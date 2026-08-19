@@ -2,6 +2,7 @@ import { promises as fsp } from 'node:fs'
 import type { FormatEnum } from 'sharp'
 
 export * from '../../shared/utilities'
+export * as ipcMainTypeSafe from './ipcMainTypeSafe'
 
 export function swapPropertiesMutative<T>(objA: T, objB: T, ...fields: (keyof T)[]) {
 	for (const field of fields) {

@@ -2,7 +2,7 @@ import path from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { app, BrowserWindow, Menu, MenuItem, MenuItemConstructorOptions, shell, nativeTheme } from 'electron'
 
-import { IS_DEV, IS_MAC } from './constants'
+import { IS_DEV, IS_MAC, PRELOAD_PATH } from './constants'
 import { createBrowserWindowOptions, doesFileExist } from './utilities'
 
 import { setIpcRoutes } from './lib/ipcRoutes'
@@ -11,13 +11,6 @@ import { ImageStitchData } from './lib/uploadImages'
 
 let mainWin: BrowserWindow | null = null
 let imageStitcher: ImageStitchData | null = null
-let preloadPath: string
-
-if (!IS_DEV) {
-	preloadPath = path.join(import.meta.dirname, 'preload.js')
-} else {
-	preloadPath = path.join(import.meta.dirname, '..', '..', 'build', 'preload.js')
-}
 
 function createURL(view = 'index') {
 	const { href } = IS_DEV
@@ -32,11 +25,11 @@ async function createMainWindow() {
 		let preloadScriptExists = false
 
 		while (!preloadScriptExists) {
-			preloadScriptExists = await doesFileExist(preloadPath)
+			preloadScriptExists = await doesFileExist(PRELOAD_PATH)
 		}
 	}
 
-	mainWin = new BrowserWindow(createBrowserWindowOptions(preloadPath))
+	mainWin = new BrowserWindow(createBrowserWindowOptions(PRELOAD_PATH))
 
 	mainWin.loadURL(createURL())
 

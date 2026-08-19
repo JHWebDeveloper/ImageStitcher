@@ -1,11 +1,11 @@
 import { NAMESPACE } from './constants'
 
-import { electronAPI } from '../preload'
+import type { ElectronAPI } from '../preload'
 
 declare global {
 	interface Window {
 		[NAMESPACE]: {
-			electronAPI: typeof electronAPI
+			electronAPI: ElectronAPI
 		}
 	}
 }

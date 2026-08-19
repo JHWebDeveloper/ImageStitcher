@@ -73,9 +73,7 @@ export interface IpcChannel {
 	[CHANNEL.ADJUST_STITCH]: {
 		payload: AdjustStitchOpts
 	}
-	[CHANNEL.CLEAR_BOTH_IMAGES]: {
-		payload: never
-	}
+	[CHANNEL.CLEAR_BOTH_IMAGES]: never
 	[CHANNEL.CLEAR_IMAGE]: {
 		payload: SideOption
 	}
@@ -89,7 +87,6 @@ export interface IpcChannel {
 		payload: { format: keyof FormatEnum }
 	}
 	[CHANNEL.IS_MERGE_RESULT_READY]: {
-		payload: never
 		response: boolean
 	}
 	[CHANNEL.ROTATE_IMAGE]: {
@@ -116,9 +113,7 @@ export interface IpcChannel {
 			height: number
 		}
 	}
-	[CHANNEL.SWAP_IMAGES]: {
-		payload: never
-	}
+	[CHANNEL.SWAP_IMAGES]: never
 	[CHANNEL.TOGGLE_FLIP]: {
 		payload: SideOption
 	}
@@ -139,6 +134,18 @@ export interface IpcChannel {
 	}
 }
 
-export type PossiblePromise<T> = Promise<T> | T
+export type SafeKey<T, K extends PropertyKey> = K extends keyof T ? T[K] : undefined
 
-export type SafeResponse<T, K extends PropertyKey> = K extends keyof T ? T[K] : undefined
+export type IpcPayload<K extends keyof IpcChannel> = SafeKey<IpcChannel[K], 'payload'>
+
+export type IpcResponse<K extends keyof IpcChannel> = SafeKey<IpcChannel[K], 'response'>
+
+export type ChannelsWithPayload = {
+  [K in keyof IpcChannel]: IpcPayload<K> extends undefined ? never : K;
+}[keyof IpcChannel]
+
+export type ChannelsWithoutPayload = {
+  [K in keyof IpcChannel]: K extends ChannelsWithPayload ? never : K;
+}[keyof IpcChannel]
+
+export type PossiblePromise<T> = Promise<T> | T

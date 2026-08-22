@@ -1,4 +1,5 @@
 export * from './useCallbackState'
 export * from './useDebounce'
+export * from './useElectronAPI'
 export * from './useThrottle'
 export * from './useToggle'

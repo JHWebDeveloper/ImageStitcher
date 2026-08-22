@@ -1,9 +1,8 @@
-import React, { createContext, type PropsWithChildren, use, useEffect, useRef, useState } from 'react'
+import React, { createContext, type PropsWithChildren, useEffect, useRef, useState } from 'react'
 
 import { DEFAULT_VALUE } from '../constants'
+import { useElectronAPI } from '../hooks'
 import { StitchResponse, StitchResult } from '../types'
-
-import { ElectronAPI } from './ElectronAPIContext'
 
 interface Props extends PropsWithChildren {}
 
@@ -24,7 +23,7 @@ const initState: StitchResult = {
 export const ResponseContext = createContext(initState)
 
 export function ResponseContextProvider({ children }: Props) {
-	const { setDisplayStitchResponseListener, removeDisplayStitchResponseListener } = use(ElectronAPI)
+	const { setDisplayStitchResponseListener, removeDisplayStitchResponseListener } = useElectronAPI()
 	const [ stitchResult, setStitchResponse ] = useState(initState)
 	const timestamp = useRef(-Infinity)
 

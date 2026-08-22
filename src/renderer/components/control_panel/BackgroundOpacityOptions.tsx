@@ -1,14 +1,12 @@
-import React, { use } from 'react'
+import React from 'react'
 
 import { DEFAULT_VALUE } from '../../constants'
-import { useStateCallback } from '../../hooks'
-
-import { ElectronAPI } from '../../context/ElectronAPIContext'
+import { useElectronAPI, useStateCallback } from '../../hooks'
 
 import NumberInput from '../utility_components/NumberInput'
 
 export default function BackgroundOpacityInput() {
-	const { setBackgroundOpacity } = use(ElectronAPI)
+	const { setBackgroundOpacity } = useElectronAPI()
 	const [ bgOpacity, setBgOpacity ] = useStateCallback<number>(DEFAULT_VALUE.BACKGROUND_OPACITY, setBackgroundOpacity)
 
 	return (

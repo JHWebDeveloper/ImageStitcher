@@ -3,9 +3,9 @@ import toastr from 'toastr'
 
 import '../css/global.css'
 
+import { useElectronAPI } from '../hooks'
 import { StitchResult } from '../types'
 
-import { ElectronAPI, ElectronAPIProvider } from '../context/ElectronAPIContext'
 import { LayoutContext, LayoutContextProvider } from '../context/LayoutContext'
 import { ResponseContext, ResponseContextProvider } from '../context/ResponseContext'
 import { SaveContextProvider } from '../context/SaveContext'
@@ -17,7 +17,7 @@ import SideBar from './control_panel/SideBar'
 interface MainProps extends Pick<StitchResult, 'imageAFormat' | 'isImageBLoaded'> {}
 
 function Main({ imageAFormat, isImageBLoaded }: MainProps) {
-	const { setErrorListener, removeErrorListener } = use(ElectronAPI)
+	const { setErrorListener, removeErrorListener } = useElectronAPI()
 	const { isLeftLayout } = use(LayoutContext)
 
 	useEffect(() => {
@@ -57,10 +57,8 @@ function LayoutContextWrapper() {
 
 export default function App() {
 	return (
-		<ElectronAPIProvider>
-			<ResponseContextProvider>
-				<LayoutContextWrapper />
-			</ResponseContextProvider>
-		</ElectronAPIProvider>
+		<ResponseContextProvider>
+			<LayoutContextWrapper />
+		</ResponseContextProvider>
 	)
 }

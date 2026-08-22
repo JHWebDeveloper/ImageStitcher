@@ -1,14 +1,12 @@
-import React, { type ChangeEvent, use } from 'react'
+import React, { type ChangeEvent } from 'react'
 
 import { DEFAULT_VALUE } from '../../constants'
-import { useDebounce, useStateCallback } from '../../hooks'
-
-import { ElectronAPI } from '../../context/ElectronAPIContext'
+import { useDebounce, useElectronAPI, useStateCallback } from '../../hooks'
 
 type InputChangeEvent = ChangeEvent<HTMLInputElement>
 
 export default function BackgroundColorInput() {
-	const { setBackgroundColor } = use(ElectronAPI)
+	const { setBackgroundColor } = useElectronAPI()
 	const [ setBgColorDebounce ] = useDebounce(setBackgroundColor, 60)
 
 	const [ bgColor, setBgColor ] = useStateCallback<string>(DEFAULT_VALUE.BACKGROUND_COLOR_HEX, (newValue, dispatch) => {

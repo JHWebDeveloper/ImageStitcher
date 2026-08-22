@@ -1,15 +1,15 @@
 import React, { type MouseEvent, use } from 'react'
 
 import { LABEL } from '../../constants'
+import { useElectronAPI } from '../../hooks'
 
-import { ElectronAPI } from '../../context/ElectronAPIContext'
 import { ResponseContext } from '../../context/ResponseContext'
 
 import ToggleComponent from '../utility_components/ToggleComponent'
 import IconButton from '../utility_components/IconButton'
 
 export default function ControlPanelBottomRow() {
-	const { clearBothImages, swapImages, toggleOrientation } = use(ElectronAPI)
+	const { clearBothImages, swapImages, toggleOrientation } = useElectronAPI()
 	const { isImageBLoaded, isVertical } = use(ResponseContext)
 
 	const toggleOrientationFromEvent = (e: MouseEvent<HTMLButtonElement>) => {

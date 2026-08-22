@@ -1,8 +1,8 @@
 import React, { use } from 'react'
 
 import { LABEL, SIDE } from '../../constants'
+import { useElectronAPI } from '../../hooks'
 
-import { ElectronAPI } from '../../context/ElectronAPIContext'
 import { ResponseContext } from '../../context/ResponseContext'
 import { LayoutContext } from '../../context/LayoutContext'
 
@@ -12,7 +12,7 @@ import StitchAdjustControls from './StitchAdjustControls'
 import IconButton from '../utility_components/IconButton'
 
 export default function ControlPanelTopRow() {
-	const { clearImage, uploadImage, uploadImages } = use(ElectronAPI)
+	const { clearImage, uploadImage, uploadImages } = useElectronAPI()
 	const { isImageBLoaded, isVertical, ...responseCtx } = use(ResponseContext)
 	const { labelA, labelB } = use(LayoutContext)
 

@@ -1,9 +1,9 @@
 import React, { use } from 'react'
 
 import { FORMAT, LABEL, POST_SAVE_ACTION, SAVE_TYPE } from '../../constants'
+import { useElectronAPI } from '../../hooks'
 import { SaveTypeValue } from '../../types'
 
-import { ElectronAPI } from '../../context/ElectronAPIContext'
 import { LayoutContext } from '../../context/LayoutContext'
 import { ResponseContext } from '../../context/ResponseContext'
 import { SaveContext } from '../../context/SaveContext'
@@ -15,7 +15,7 @@ import IconButton from '../utility_components/IconButton'
 import Checkbox from '../utility_components/Checkbox'
 
 export default function SaveOptions() {
-	const { flattenImage, saveImage } = use(ElectronAPI)
+	const { flattenImage, saveImage } = useElectronAPI()
 	const { labelA, labelB } = use(LayoutContext)
 	const { imageAHasOriginal, imageBHasOriginal, isImageALoaded, isImageBLoaded, isVertical } = use(ResponseContext)
 	const { getSaveOptions, format, saveType, ...saveCtx } = use(SaveContext)

@@ -1,9 +1,9 @@
-import React, { use } from 'react'
+import React from 'react'
 
 import { LABEL } from '../../constants'
 import type { Side } from '../../types'
 
-import { ElectronAPI } from '../../context/ElectronAPIContext'
+import { useElectronAPI } from '../../hooks'
 
 import IconButton from '../utility_components/IconButton'
 
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function RotationControls({ side, isSideways }: Props) {
-	const { flipImage, flopImage, rotateImage } = use(ElectronAPI)
+	const { flipImage, flopImage, rotateImage } = useElectronAPI()
 	const angle = isSideways ? 90 : 0
 
 	return (

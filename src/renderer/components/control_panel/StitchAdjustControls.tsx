@@ -1,10 +1,8 @@
-import React, { use, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { DEFAULT_VALUE, LABEL } from '../../constants'
-import { useToggle, useThrottle } from '../../hooks'
+import { useElectronAPI, useToggle, useThrottle } from '../../hooks'
 import { clamp, round } from '../../utilities'
-
-import { ElectronAPI } from '../../context/ElectronAPIContext'
 
 import Slider from '../utility_components/SliderDouble'
 import NumberInput from '../utility_components/NumberInput'
@@ -46,7 +44,7 @@ const useCaptureLRValues = (): [
 }
 
 export default function StitchAdjustControls({ isVertical }: Props) {
-	const { adjustStitch } = use(ElectronAPI)
+	const { adjustStitch } = useElectronAPI()
 	const [ [ cropImageAValue, cropImageBValue ], setCropValues ] = useState(DEFAULT_VALUE.CROP_VALUES)
 	const [ capturedL, capturedR, captureLRValues, resetLRValues ] = useCaptureLRValues()
 	const [ isLinked, toggleIsLinked ] = useToggle(true)

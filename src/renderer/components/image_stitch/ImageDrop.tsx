@@ -1,8 +1,8 @@
 import React, { use } from 'react'
 
+import { useElectronAPI } from '../../hooks'
 import type { DivDragEvent, Side } from '../../types'
 
-import { ElectronAPI } from '../../context/ElectronAPIContext'
 import { SaveContext } from '../../context/SaveContext'
 
 interface Props {
@@ -27,7 +27,7 @@ export default function ImageDrop({
 	shouldReplace = true,
 	allowMultiple = false
 }: Props) {
-	const { isMergeResultReady, saveImage, uploadImage, uploadImages } = use(ElectronAPI)
+	const { isMergeResultReady, saveImage, uploadImage, uploadImages } = useElectronAPI()
 	const { getSaveOptions, saveOnDrop } = use(SaveContext)
 
 	const uploadImagesOnDrop = async (files: File[]) => {

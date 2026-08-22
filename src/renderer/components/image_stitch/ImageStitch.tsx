@@ -1,11 +1,10 @@
 import React, { use, useEffect, useRef } from 'react'
 
 import { LABEL, SIDE } from '../../constants'
-import { useDebounce } from '../../hooks'
+import { useDebounce, useElectronAPI } from '../../hooks'
 import type { DivDragEvent } from '../../types'
 import { assertsIsDOMRect } from '../../utilities'
 
-import { ElectronAPI } from '../../context/ElectronAPIContext'
 import { ResponseContext } from '../../context/ResponseContext'
 import { LayoutContext } from '../../context/LayoutContext'
 
@@ -22,7 +21,7 @@ function onDragLeave(e: DivDragEvent) {
 }
 
 export default function ImageStitch() {
-	const { setPreviewBounds, uploadImages } = use(ElectronAPI)
+	const { setPreviewBounds, uploadImages } = useElectronAPI()
 	const { base64, isImageALoaded, isImageBLoaded, isVertical } = use(ResponseContext)
 	const { labelA, labelB } = use(LayoutContext)
 	const previewWindow = useRef<HTMLDivElement>(null)

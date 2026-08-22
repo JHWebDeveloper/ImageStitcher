@@ -1,8 +1,7 @@
-import React, { use } from 'react'
+import React from 'react'
 
 import { ALIGNMENT_TYPE, LABEL } from '../../constants'
-
-import { ElectronAPI } from '../../context/ElectronAPIContext'
+import { useElectronAPI } from '../../hooks'
 
 import IconButton from '../utility_components/IconButton'
 
@@ -11,7 +10,7 @@ interface Props {
 }
 
 export default function AlignmentOptions({ isVertical }: Props) {
-	const { setAlignmentType } = use(ElectronAPI)
+	const { setAlignmentType } = useElectronAPI()
 	const [ labelStart, labelEnd, horizontalOrVertical ] = isVertical
 		? [LABEL.LEFT, LABEL.RIGHT, 'horizontal']
 		: [LABEL.TOP, LABEL.BOTTOM, 'vertical']

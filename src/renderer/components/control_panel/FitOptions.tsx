@@ -1,9 +1,9 @@
 import React, { use } from 'react'
 
 import { FIT_TYPE, LABEL } from '../../constants'
+import { useElectronAPI } from '../../hooks'
 import type { FitTypeValue } from '../../types'
 
-import { ElectronAPI } from '../../context/ElectronAPIContext'
 import { ResponseContext } from '../../context/ResponseContext'
 
 import Select from '../utility_components/Select'
@@ -14,7 +14,7 @@ import BackgroundOpacityOptions from './BackgroundOpacityOptions'
 
 export default function FitOptions() {
 	const { fitType, isVertical } = use(ResponseContext)
-	const { setFitType } = use(ElectronAPI)
+	const { setFitType } = useElectronAPI()
 	const isContain = fitType === FIT_TYPE.CONTAIN
 
 	return (

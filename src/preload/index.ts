@@ -125,6 +125,6 @@ const electronAPI = {
 
 export type ElectronAPI = typeof electronAPI
 
-contextBridge.exposeInMainWorld(NAMESPACE, Object.freeze({
-	electronAPI: Object.freeze(electronAPI)
-}))
+contextBridge.exposeInMainWorld(NAMESPACE, {
+	electronAPI
+})

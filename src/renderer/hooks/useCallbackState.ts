@@ -1,40 +1,29 @@
 import { type Dispatch, type SetStateAction, useState } from 'react'
 
-import { assertsIsMatchingType } from '../utilities'
+type DispatchState<S> = Dispatch<SetStateAction<S>>
 
-type UseStateCallbackFn<O, I> = (newValue: I, dispatch: Dispatch<SetStateAction<O>>) => void
+type Callback<S, I> = (nextState: I, setState: DispatchState<S> ) => void
 
-type UseStateCallbackReturnValue<O, I, C> = [
-	O,
-	C extends undefined ? Dispatch<SetStateAction<O>> : ((input: I) => void),
-	Dispatch<SetStateAction<O>>,
-	C
-]
+type CustomDispatch<I> = (input: I) => void
 
-interface UseStateCallbackOptions {
-	disableAutoDispatch: boolean
-}
+// Overload Signatures
+export function useStateCallback<S>(initState: S): [S, DispatchState<S>]
+export function useStateCallback<S, I = S>(initState: S, callback: Callback<S, I>): [S, CustomDispatch<I>, DispatchState<S>]
 
-export function useStateCallback<O, I = O>(
-	initState: O,
-	callback?: UseStateCallbackFn<O, I>,
-	options?: UseStateCallbackOptions
-): UseStateCallbackReturnValue<O, I, typeof callback> {
+// Implementation Signature
+export function useStateCallback<S, I = S>(
+	initState: S,
+	callback?: Callback<S, I>
+) {
 	const [ stateValue, setState ] = useState(initState)
 
-	const dispatch = callback ? (input: I) => {
-		let willAutoDispatch = !options?.disableAutoDispatch
-
-		callback(input, nextState => {
-			willAutoDispatch = false
-			setState(nextState)
-		})
-
-		if (willAutoDispatch) {
-			assertsIsMatchingType(input, stateValue)
-			setState(input)
+	if (callback) {
+		const customDispatch = (nextState: I) => {
+			callback(nextState, setState)
 		}
-	} : setState
 
-	return [stateValue, dispatch, setState, callback]
+		return [stateValue, customDispatch, setState]
+	}
+
+	return [stateValue, setState]
 }

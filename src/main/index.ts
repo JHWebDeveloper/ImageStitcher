@@ -6,7 +6,7 @@ import { IS_DEV, IS_MAC, PRELOAD_PATH } from './constants'
 import { createBrowserWindowOptions, doesFileExist } from './utilities'
 
 import { setIpcRoutes } from './lib/ipcRoutes'
-import { emptyUploadDirectory } from './lib/fileHandlers'
+import { createOrEmptyUploadDirectory } from './lib/fileHandlers'
 import { ImageStitchData } from './lib/uploadImages'
 
 let mainWin: BrowserWindow | null = null
@@ -15,7 +15,7 @@ let imageStitcher: ImageStitchData | null = null
 function createURL(view = 'index') {
 	const { href } = IS_DEV
 		? new URL(`http://localhost:${process.env.PORT}/${view}.html`)
-		: pathToFileURL(path.join(import.meta.dirname, 'renderer', `${view}.html`))
+		: pathToFileURL(path.join(__dirname, 'renderer', `${view}.html`))
 
 	return href
 }
@@ -34,7 +34,7 @@ async function createMainWindow() {
 	mainWin.loadURL(createURL())
 
 	// Menu.setApplicationMenu(Menu.buildFromTemplate())
-	await emptyUploadDirectory()
+	await createOrEmptyUploadDirectory()
 
 	mainWin.on('ready-to-show', async () => {
 		if (!imageStitcher) {

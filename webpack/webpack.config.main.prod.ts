@@ -13,7 +13,7 @@ const config: webpack.Configuration = {
 	entry: MAIN_PATH,
 	output: {
 		path: BUILD_PATH,
-		filename: 'main.js'
+		filename: 'main.cjs'
 	},
 	externals: [
 		nodeExternals(),
@@ -22,14 +22,14 @@ const config: webpack.Configuration = {
 		}
 	],
 	plugins: [
-		new CopyWebpackPlugin({
-			patterns: [
-				{
-					from: path.join(BUILD_ASSETS_PATH, 'icons'),
-					to: path.join(BUILD_PATH, 'icons')
-				}
-			]
-		})
+		// new CopyWebpackPlugin({
+		// 	patterns: [
+		// 		{
+		// 			from: path.join(BUILD_ASSETS_PATH, 'icons'),
+		// 			to: path.join(BUILD_PATH, 'icons')
+		// 		}
+		// 	]
+		// })
 	]
 }
 

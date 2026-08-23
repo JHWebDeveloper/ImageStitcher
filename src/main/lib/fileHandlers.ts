@@ -3,8 +3,9 @@ import path from 'node:path'
 import { app, BrowserWindow, dialog, type OpenDialogOptions, type SaveDialogReturnValue, type WebContents } from 'electron'
 import type { FormatEnum } from 'sharp'
 
-import { DEFAULT_VALUE, ERROR_MSG, IMAGE_FILTER, SAVE_TYPE, UPLOADS_PATH } from '../constants'
+import { APP_DATA_PATH, DEFAULT_VALUE, ERROR_MSG, IMAGE_FILTER, IS_DEV, SAVE_TYPE, UPLOADS_PATH } from '../constants'
 import type { SaveOptions } from '../types'
+import { doesFileExist } from '../utilities'
 
 import type { ImageStitchData, ImageUploadData } from './uploadImages'
 
@@ -55,6 +56,20 @@ export async function emptyUploadDirectory() {
 	if (!fileNames.length) return
 
 	await Promise.all(fileNames.map(filename => fsp.unlink(path.join(UPLOADS_PATH, filename))))
+}
+
+export async function createOrEmptyUploadDirectory() {
+	const appDataPathExists = IS_DEV || await doesFileExist(APP_DATA_PATH)
+
+	if (appDataPathExists && await doesFileExist(UPLOADS_PATH)) {
+		return emptyUploadDirectory()
+	}
+
+	if (!appDataPathExists) {
+		await fsp.mkdir(APP_DATA_PATH)
+	}
+
+	await fsp.mkdir(UPLOADS_PATH)
 }
 
 async function warnBeforeOverwriting(originalFilePath: string) {

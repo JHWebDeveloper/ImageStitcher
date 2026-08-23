@@ -9,12 +9,14 @@ export const IS_MAC = process.platform === 'darwin'
 export const IS_DEV = process.env.NODE_ENV === 'development'
 
 export const PRELOAD_PATH = IS_DEV
-	? path.join(import.meta.dirname, '..', '..', 'build', 'preload.js')
-	: path.join(import.meta.dirname, 'preload.js')
+	? path.join(import.meta.dirname, '..', '..', '..', 'build', 'preload.js')
+	: path.join(__dirname, 'preload.js')
 
-export const UPLOADS_PATH = process.env.NODE_ENV === 'development'
-	? path.resolve(import.meta.dirname, '..', 'uploads')
-	: path.join(app.getPath('appData'), 'image-stitch', 'uploads')
+export const APP_DATA_PATH = path.join(app.getPath('appData'), 'image-stitch')
+
+export const UPLOADS_PATH = IS_DEV
+	? path.join(import.meta.dirname, '..', 'uploads')
+	: path.join(APP_DATA_PATH, 'uploads')
 
 export const PREVIEW_IMAGE_FORMAT: keyof FormatEnum = 'webp'
 

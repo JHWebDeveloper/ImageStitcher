@@ -35,6 +35,7 @@
 		"@types/react-dom": "^19.0.2",
 		"@types/toastr": "^2.1.43",
 		"@types/webpack-env": "^1.18.5",
+		"@types/webpack-node-externals": "^3.0.4",
 		"babel-loader": "^10.0.0",
 		"babel-plugin-add-react-displayname": "^0.0.5",
 		"babel-plugin-react-compiler": "^1.0.0",
